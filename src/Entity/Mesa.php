@@ -30,6 +30,9 @@ class Mesa
     #[ORM\OneToMany(mappedBy: 'mesa', targetEntity: Reserva::class)]
     private Collection $reserva;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $Imagen = null;
+
     public function __construct()
     {
         $this->reserva = new ArrayCollection();
@@ -114,6 +117,18 @@ class Mesa
                 $reserva->setMesa(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImagen(): ?string
+    {
+        return $this->Imagen;
+    }
+
+    public function setImagen(?string $Imagen): self
+    {
+        $this->Imagen = $Imagen;
 
         return $this;
     }

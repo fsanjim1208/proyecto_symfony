@@ -1,0 +1,10 @@
+paquetes
+
+composer require orm
+composer require maker
+composer requires form
+composer requires validator
+composer requires templates
+composer require debug
+composer require annotations
+composer requires symfony/security-bundle

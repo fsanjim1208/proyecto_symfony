@@ -1,0 +1,36 @@
+
+{% extends "base.html.twig" %}
+
+    {% block stylesheets %}
+        {# <link href="../public/CSS/css.css" type="text/css" rel="stylesheet" /> #}
+        <link href="{{ asset('CSS/css.css') }}" type="text/css" rel="stylesheet" />
+    {% endblock %}
+
+    {% block javascripts %}
+        <script src="{{ asset('JS/jquery.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/jquery-ui.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/profesor.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/mesa.js') }}" type="text/javascript"></script>
+    {% endblock %}
+
+    {% block body %}
+        {# {{dump()}} #}
+        {# <h1>eee</h1>
+        <p>ladknvz</p>
+        <img src="{{ asset('Imagenes/mesa.png') }}"></img> #}
+
+
+        <div class="contenedor">
+            <div class="sala"><p>Sala</p></div>
+            <div class="almacen">
+                <p>Almacen</p> <br>
+                {# <div class="mesa" id="mesa_1"></div>
+                <div class="mesa" id="mesa_2"></div>
+                <div class="mesa" id="mesa_3"></div>
+                <div class="mesa" id="mesa_4"></div>
+                <div class="mesa" id="mesa_5"></div> #}
+            </div>
+        </div>
+
+
+    {% endblock %}

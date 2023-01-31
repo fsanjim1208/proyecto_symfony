@@ -31,9 +31,13 @@ class Evento
     #[ORM\OneToMany(mappedBy: 'evento', targetEntity: Presentacion::class)]
     private Collection $presentacion;
 
+    #[ORM\OneToMany(mappedBy: 'evento', targetEntity: Participa::class)]
+    private Collection $participa;
+
     public function __construct()
     {
         $this->presentacion = new ArrayCollection();
+        $this->participa = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -113,6 +117,36 @@ class Evento
             // set the owning side to null (unless already changed)
             if ($presentacion->getEvento() === $this) {
                 $presentacion->setEvento(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Participa>
+     */
+    public function getParticipa(): Collection
+    {
+        return $this->participa;
+    }
+
+    public function addParticipa(Participa $participa): self
+    {
+        if (!$this->participa->contains($participa)) {
+            $this->participa->add($participa);
+            $participa->setEvento($this);
+        }
+
+        return $this;
+    }
+
+    public function removeParticipa(Participa $participa): self
+    {
+        if ($this->participa->removeElement($participa)) {
+            // set the owning side to null (unless already changed)
+            if ($participa->getEvento() === $this) {
+                $participa->setEvento(null);
             }
         }
 
