@@ -21,7 +21,7 @@ class Participa
 
     #[ORM\ManyToOne(inversedBy: 'participa')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?evento $evento = null;
+    private ?Evento $evento = null;
 
     #[ORM\ManyToOne(inversedBy: 'participa')]
     #[ORM\JoinColumn(nullable: false)]
