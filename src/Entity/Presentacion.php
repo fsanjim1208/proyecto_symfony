@@ -15,11 +15,11 @@ class Presentacion
 
     #[ORM\ManyToOne(inversedBy: 'presentacion')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?evento $evento = null;
+    private ?Evento $evento = null;
 
     #[ORM\ManyToOne(inversedBy: 'presentacion')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?juego $juego = null;
+    private ?Juego $juego = null;
 
     public function getId(): ?int
     {

@@ -21,6 +21,8 @@ class JuegoRepository extends ServiceEntityRepository
         parent::__construct($registry, Juego::class);
     }
 
+
+
     public function save(Juego $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
@@ -38,6 +40,7 @@ class JuegoRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
 
 //    /**
 //     * @return Juego[] Returns an array of Juego objects

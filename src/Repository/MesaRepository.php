@@ -21,6 +21,8 @@ class MesaRepository extends ServiceEntityRepository
         parent::__construct($registry, Mesa::class);
     }
 
+    
+
     public function save(Mesa $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);

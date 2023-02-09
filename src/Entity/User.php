@@ -32,9 +32,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $Usuario = null;
-
-    #[ORM\Column(length: 50)]
     private ?string $Nombre = null;
 
     #[ORM\Column(length: 50)]
@@ -124,17 +121,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getUsuario(): ?string
-    {
-        return $this->Usuario;
-    }
-
-    public function setUsuario(string $Usuario): self
-    {
-        $this->Usuario = $Usuario;
-
-        return $this;
-    }
 
     public function getNombre(): ?string
     {

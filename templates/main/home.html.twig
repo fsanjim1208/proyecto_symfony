@@ -1,12 +1,11 @@
+{% extends 'base2.html.twig' %}
 
-{% extends "base2.html.twig" %}
+{% block title %}Hello fernando!{% endblock %}
 
-
-
-    {% block body %}
+{% block body %}
 
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
-        <a href="/home" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <a href="/index" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>Proyecto</h2>
         </a>
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
@@ -31,37 +30,28 @@
             <a href="/login" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">Inicia Sesion<i class="fa fa-arrow-right ms-3"></i></a>
         </div>
     </nav>
-    
-    <div class="contenedor">
-        <div class="sala"><p>Sala</p></div>
-        <div class="almacen">
-            <p>Almacen</p> 
-            <button class="btn btn-primary w-50 py-1 centraBoton" type="submit" id="creaMesa">Crear Mesa Nueva</button>
-                {# <div class="mesa" id="mesa_1"></div>
-                <div class="mesa" id="mesa_2"></div>
-                <div class="mesa" id="mesa_3"></div>
-                <div class="mesa" id="mesa_4"></div>
-                <div class="mesa" id="mesa_5"></div> #}
-        </div>
+
+    <div class="contenedor2">
+        <div class="div">mesa 1</div>
+        <div class="div">mesa 2</div>
+        <div class="div">mesa 3</div>
+        <div class="div">mesa 4</div>
     </div>
-    <footer>
-        <div>
-            <div class="social">
-                <a href="#"><img src="{{ asset('Imagenes/facebook.png') }}" alt="facebook"></a>
-                <a href="#"><img src="{{ asset('Imagenes/youtube.png') }}" alt="youtube"></a>
-                <a href="#"><img src="{{ asset('Imagenes/twitter.png') }}" alt="twitter"></a>
-                <a href="#"><img src="{{ asset('Imagenes/instagram.jpg') }}" alt="instagram"></a><br>
-                <small class="mt-5">Copyright © Departamento de Informática 2019</small>
-            </div>
-        </div>
-    </footer>
-           
-        {# {{dump()}} #}
-        {# <h1>eee</h1>
-        <p>ladknvz</p>
-        <img src="{{ asset('Imagenes/mesa.png') }}"></img> #}
 
 
 
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
 
-    {% endblock %}
+<div class="example-wrapper">
+    <h1>Hello </h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'C:/Users/ferku/OneDrive/Escritorio/2ª DAW/Desarrollo web entorno servidor(DWESE)/SYMFONY/proyecto_symfony/src/Controller/MainController.php'|file_link(0) }}">src/Controller/MainController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'C:/Users/ferku/OneDrive/Escritorio/2ª DAW/Desarrollo web entorno servidor(DWESE)/SYMFONY/proyecto_symfony/templates/main/index.html.twig'|file_link(0) }}">templates/main/index.html.twig</a></code></li>
+    </ul>
+</div>
+{% endblock %}

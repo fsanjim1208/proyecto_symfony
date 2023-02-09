@@ -1,8 +1,6 @@
 
 {% extends "base2.html.twig" %}
 
-
-
     {% block body %}
 
     <nav class="navbar navbar-expand-lg bg-white navbar-light shadow sticky-top p-0">
@@ -22,6 +20,7 @@
                     <div class="dropdown-menu fade-down m-0">
                         <a href="/mesas" class="dropdown-item">Mesas</a>
                         <a href="/juegos" class="dropdown-item">Juegos</a>
+                        
                         <a href="/reserva" class="dropdown-item">Reserva</a>
                         <a href="404.html" class="dropdown-item">404 Page</a>
                     </div>
@@ -34,16 +33,47 @@
     
     <div class="contenedor">
         <div class="sala"><p>Sala</p></div>
-        <div class="almacen">
-            <p>Almacen</p> 
-            <button class="btn btn-primary w-50 py-1 centraBoton" type="submit" id="creaMesa">Crear Mesa Nueva</button>
-                {# <div class="mesa" id="mesa_1"></div>
-                <div class="mesa" id="mesa_2"></div>
-                <div class="mesa" id="mesa_3"></div>
-                <div class="mesa" id="mesa_4"></div>
-                <div class="mesa" id="mesa_5"></div> #}
+
+        <div class="c-contentForm formreserva">
+            <h2 class="text-primary text-uppercase mt-5">Reservar</h2>
+            <form class="ms-5" action="/home">
+                <div class="row g-6">
+                    <div class="col-md-13">
+                        <div class="form-floating">
+                            <input type="text" id="desde" class="form-control" placeholder="Fecha">
+                            <label for="desde">Fecha</label>
+                        </div>
+                        <br>
+                        <div class="form-floating">
+                            <select id="tramo" class="form-control" placeholder="Hora">
+                                {% for tramo in tramos %}
+                                    <option>{{tramo.getIncio().format('H:i:s')}} : {{tramo.getFin().format('H:i:s')}}</option>
+                                {% endfor %}
+                            </select> 
+                            <label for="tramo">Hora </label>
+                        </div>
+                        <br>
+                        <div class="form-floating">
+                            <input type="number" id="jugadores" class="form-control" placeholder="Numero de jugadores">
+                            <label for="jugadores">Numero de jugadores</label>
+                        </div>
+                        <br>
+                        <div class="form-floating">
+                            <select id="juegos" class="form-control" placeholder="Juego">
+                                {% for juego in juegos %}
+                                    <option>{{juego.Nombre}}</option>
+                                {% endfor %}
+                            </select> 
+                            <label for="Juegos">Juego </label>
+                        </div>
+                        <br>
+                        <button class="btn btn-primary w-100 py-3" type="submit">Completar Reserva</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
+
     <footer>
         <div>
             <div class="social">
@@ -55,13 +85,5 @@
             </div>
         </div>
     </footer>
-           
-        {# {{dump()}} #}
-        {# <h1>eee</h1>
-        <p>ladknvz</p>
-        <img src="{{ asset('Imagenes/mesa.png') }}"></img> #}
-
-
-
-
+    {{dump()}}
     {% endblock %}

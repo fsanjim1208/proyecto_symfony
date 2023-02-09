@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\JuegoRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -196,4 +197,6 @@ class Juego
 
         return $this;
     }
+
+
 }

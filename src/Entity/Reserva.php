@@ -17,9 +17,6 @@ class Reserva
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $fecha_inicio = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $fecha_fin = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $fecha_anulacion = null;
 
@@ -28,9 +25,6 @@ class Reserva
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $tramo_inicio = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $tramo_final = null;
 
     #[ORM\ManyToOne(inversedBy: 'reserva')]
     #[ORM\JoinColumn(nullable: false)]
@@ -53,18 +47,6 @@ class Reserva
     public function setFechaInicio(\DateTimeInterface $fecha_inicio): self
     {
         $this->fecha_inicio = $fecha_inicio;
-
-        return $this;
-    }
-
-    public function getFechaFin(): ?\DateTimeInterface
-    {
-        return $this->fecha_fin;
-    }
-
-    public function setFechaFin(\DateTimeInterface $fecha_fin): self
-    {
-        $this->fecha_fin = $fecha_fin;
 
         return $this;
     }
@@ -101,18 +83,6 @@ class Reserva
     public function setTramoInicio(\DateTimeInterface $tramo_inicio): self
     {
         $this->tramo_inicio = $tramo_inicio;
-
-        return $this;
-    }
-
-    public function getTramoFinal(): ?\DateTimeInterface
-    {
-        return $this->tramo_final;
-    }
-
-    public function setTramoFinal(\DateTimeInterface $tramo_final): self
-    {
-        $this->tramo_final = $tramo_final;
 
         return $this;
     }

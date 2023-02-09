@@ -56,12 +56,12 @@ class Participa
         return $this;
     }
 
-    public function getEvento(): ?evento
+    public function getEvento(): ?Evento
     {
         return $this->evento;
     }
 
-    public function setEvento(?evento $evento): self
+    public function setEvento(?Evento $evento): self
     {
         $this->evento = $evento;
 

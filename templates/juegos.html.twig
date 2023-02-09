@@ -32,17 +32,37 @@
         </div>
     </nav>
     
-    <div class="contenedor">
-        <div class="sala"><p>Sala</p></div>
-        <div class="almacen">
-            <p>Almacen</p> 
-            <button class="btn btn-primary w-50 py-1 centraBoton" type="submit" id="creaMesa">Crear Mesa Nueva</button>
-                {# <div class="mesa" id="mesa_1"></div>
-                <div class="mesa" id="mesa_2"></div>
-                <div class="mesa" id="mesa_3"></div>
-                <div class="mesa" id="mesa_4"></div>
-                <div class="mesa" id="mesa_5"></div> #}
-        </div>
+    
+
+    <div id="juego" class=" mt-4">
+
+        <h3 class="text-primary mb-4 ms-5">Listado de juegos</h3>
+        <table class=" table table-hover table-bordered table-condensed miTabla">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Editorial</th>
+                    <th>Ancho</th>
+                    <th>Alto</th>
+                    <th>Jugadores min</th>
+                    <th>Jugadores max</th>
+                    <th>Imagen</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for juego in juegos %}
+                    <tr>
+                        <td>{{ juego.nombre }}</td>
+                        <td>{{ juego.editorial }}</td>
+                        <td>{{ juego.Ancho }}</td>
+                        <td>{{ juego.Alto }}</td>
+                        <td>{{ juego.getJugadoresMin() }}</td> 
+                        <td>{{ juego.getJugadoresMax() }}</td> 
+                        <td><img src={{juego.img}} class="c-imagen c-imagen--juegos" ></img></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
     <footer>
         <div>
@@ -55,6 +75,7 @@
             </div>
         </div>
     </footer>
+    {{dump()}}
            
         {# {{dump()}} #}
         {# <h1>eee</h1>

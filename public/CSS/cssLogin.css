@@ -1,18 +1,23 @@
 
-/* .c-contentForm{
-    display: flex;
+.c-contentForm{
     text-align: center;
     justify-content: center;
-} */
+}
 
 .centraFormulario{
-    /* display: flex;
-    flex-direction: column;
-    justify-content: center;
+
+    margin-top: 2%;
+    margin-left: 33%;
     align-items: center;
-    width: 700px;
-    margin: 0 auto;
-    max-width: 700px; */
-    margin-top: 10%;
-    margin-left: 32%;
+    justify-content: center;
 }
+
+.centraBoton{
+    margin-bottom: 3%;
+    margin-left: 26%;
+    align-items: center;
+    justify-content: center;
+}
+
+
+

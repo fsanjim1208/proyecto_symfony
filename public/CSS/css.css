@@ -1,25 +1,38 @@
-#contenedor{
+.contenedor{
+    display: flex;
+    flex-flow: row wrap;
     width:100%;
     height:100%;
 }
+.formreserva{
+    /* border: 1px solid blue; */
+    margin-left: 2%;
+    margin-top: 2%;
+    width: 350px;
+}
 
 .sala{
-    position: absolute;
+    /* position: absolute;
     left: 10px;
-    top: 0;
-    width: 1150px; 
-    height: 700px;
+    top: 0; */
+    margin-top: 2%;
+    margin-left: 2%;
+    width: 1000px; 
+    height: 600px;
     border: 1px solid red;
 }
 
 
 .almacen{
-    position: absolute;
+    /* position: absolute;
     overflow-y: scroll;
     left: 1170px;
-    top: 0;
-    height: 700px;
-    min-width: 300px;
+    top: 0; */
+    overflow: auto;
+    margin-top: 2%;
+    margin-left: 2%;
+    height: 600px;
+    min-width: 400px;
     width: auto;
     border: 1px solid blue;
 
@@ -31,10 +44,60 @@
 }
 
 .almacen .mesa{
-    margin: 5px 5px 5px 5px;
+    margin: 5px 5px 5px 10px;
     position: relative;
 }
 
 .sala .mesa{
     position: absolute;
+}
+
+.ui-dialog
+{
+background: #e5e5e5;
+}
+
+.c-form--mesas{
+    margin-top: 5%;
+    margin-left: 16%;
+    align-items: center;
+    justify-content: center;
+}
+
+.c-imagen--juegos{
+    width: 100px;
+    height: 100px;
+}
+
+.miTabla{
+    width: 80%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;  ;
+}
+
+.miTabla td, .miTabla th{
+    height: 30px;
+    width: 100px;
+    text-align: center;
+    vertical-align:middle;
+}
+
+.contenedor2{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #ccc;
+    border: 1px solid black;
+    padding: 20px;
+    width:100%;
+    height:100%;
+}
+
+.div{
+    background-color: white;
+    border: 1px solid black;
+    width: 100px;
+    height: 100px;
+    margin: 10px;
 }
