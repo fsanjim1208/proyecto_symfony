@@ -1,34 +1,40 @@
-.contenedor{
+#contenedor{
     width:100%;
     height:100%;
-    /* overflow: scroll; */
-
 }
 
 .sala{
     position: absolute;
     left: 10px;
     top: 0;
-    width: 1000px; 
-    height: 800px;
+    width: 1150px; 
+    height: 700px;
     border: 1px solid red;
 }
 
+
 .almacen{
     position: absolute;
-    /* overflow: scroll; */
-    left: 1020px;
+    overflow-y: scroll;
+    left: 1170px;
     top: 0;
-    height: 800px;
-    width: 300px;
+    height: 700px;
+    min-width: 300px;
+    width: auto;
     border: 1px solid blue;
+
+}
+.mesa{
+    background-image: url("../Imagenes/mesa.png");
+    border: 1px solid black;
+    
 }
 
-.mesa{
-    position: relative;
-    width: 150px;
-    height: 150px;
-    background-image: url("../Imagenes/mesa.png");
-
+.almacen .mesa{
     margin: 5px 5px 5px 5px;
+    position: relative;
+}
+
+.sala .mesa{
+    position: absolute;
 }

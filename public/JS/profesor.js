@@ -1,5 +1,6 @@
 $(function(){
     var almacen= $(".almacen");
+    var sala= $(".sala");
     $.ajax( "http://localhost:8000/api/mesa",  
     {
         method:"GET",
@@ -7,23 +8,28 @@ $(function(){
         crossDomain: true,
     }
     ).done(function(data){
-        console.log(data);
+        //console.log(data);
         var mesas=[];
         $.each( data, function( key, val ) {
             if (val.y===0 && val.x===0) {
-                almacen= $(".almacen");
-                console.log(almacen);
+            
                 var mesa=$("<div>");
                 mesa.attr("id","mesa_"+val.id);
                 mesa.attr("class","mesa");
                 almacen.append(mesa);
+            }
+            else{
+                var mesa=$("<div>");
+                mesa.attr("id","mesa_"+val.id);
+                mesa.attr("class","mesa");
+                sala.append(mesa);
             }
 
 
             var mesaOrigen = new Mesa(val);
             mesas.push(mesaOrigen);
         })
-        console.log(mesas)
+        //console.log(mesas)
     })
 
     $(".mesa").draggable({
@@ -37,7 +43,7 @@ $(function(){
             $(this).attr("data-x",ui.offset.left);
 
             var mesaOrigen = new Mesa(ui.offset.left-difX, ui.offset.top-difY, $(this).width(), $(this).height());
-            console.log(mesaOrigen);
+            //console.log(mesaOrigen);
         }, 
         revert:true,
         helper: "clone", 
@@ -53,9 +59,9 @@ $(function(){
     $(".sala").droppable({
         drop:function(ev, ui){
             var difX=$(this).offset().left;
-            console.log(difX);
+            //console.log(difX);
             var difY=$(this).offset().top;
-            console.log(difY);
+            //console.log(difY);
             var mesa = ui.draggable;
 
             var nuevoTop= (parseInt(ui.offset.top))-difY;
@@ -65,7 +71,7 @@ $(function(){
             var mesaDestino=new Mesa(nuevoLeft, nuevoTop, anchuraNueva, alturaNueva);     
 
 
-            console.log(mesaDestino);      
+            //console.log(mesaDestino);      
             var pos1=[nuevoLeft, nuevoLeft+anchuraNueva,nuevoTop, nuevoTop+alturaNueva];
 
             var mesaDentro= $(".sala .mesa").eq(0);
