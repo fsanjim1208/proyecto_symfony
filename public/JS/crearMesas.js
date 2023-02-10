@@ -54,9 +54,8 @@ $(function(){
             title: "Crear una mesa nueva",
             height: 400,
             width: 600,
-            modal: false,
+            modal: true,
             buttons: {
-                
                 Cancel: function() {
                 jqPlantilla.dialog( "close" );
                 }
@@ -77,24 +76,29 @@ $(function(){
             
         // })
         var formu = $("form");
-        validar(formu[0]);
+        validar(formu);
     });
 
 
-    function validar(form, ev){
-        form.submit.addEventListener("click", function(ev){
+    function validar(formu, ev){
+
+        // form.click(function(ev){
+        //     ev.preventDefault();
+        //     alert("ee")
+        // });
+
+        formu.click(function(ev){
             const numError = [];
-                    
-            //si el campo del nombre no es valido
-            if(form.altura.value === null || form.altura.value==="" || form.altura.length<2){
+            var form= formu[0];        
+            //si el campo altura no es valido
+            if(form.altura.value === null || form.altura.value==="" || form.altura.value<15){
                 form.altura.style.border="1px solid red";
                 numError.push(2);
-            }else{
-                        
+            }else{         
                 form.altura.style.border="1px solid green";
             }
-                    //si el campo del apellido1 no es valido
-            if(form.anchura.value === null || form.anchura.value==="" || form.anchura.length<2){
+            //si el campo anchura no es valido
+            if(form.anchura.value === null || form.anchura.value==="" || form.anchura.value<15){
                 form.anchura.style.border="1px solid red";
                 numError.push(3);
 
@@ -109,18 +113,22 @@ $(function(){
             }
             else{
                 ev.preventDefault();
+                console.log(jqPlantilla)
                 $.ajax( "http://localhost:8000/api/mesa",  
-                    {
-                        method:"POST",
-                        dataType:"json",
-                        crossDomain: true,
-                        data: {
-                            "x" : 0, 
-                            "y" : 0, 
-                            "ancho": form.anchura.value,
-                            "alto": form.altura.value
-                        },
-                    })
+                {
+                    method:"POST",
+                    dataType:"json",
+                    crossDomain: true,
+                    data: {
+                        "x" : 0, 
+                        "y" : 0, 
+                        "ancho": form.anchura.value,
+                        "alto": form.altura.value
+                    },
+                })
+                
+                // pintaMesas();
+                jqPlantilla.dialog( "close" );
             }
         })
     }

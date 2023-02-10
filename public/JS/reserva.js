@@ -21,7 +21,7 @@ $(function(){
         return [festivos.indexOf(string) == -1];
     }
 
-    console.log(festivos);
+    // console.log(festivos);
     $.datepicker.setDefaults( $.datepicker.regional[ "es" ] );
     $("#desde").datepicker({
         dateFormat: "dd/mm/yy",
@@ -88,7 +88,7 @@ $(function(){
     tramo.prop('disabled', true)
     jugadores.prop('disabled', true)
     juegos.prop('disabled', true)
-    console.log(tramo);
+    // console.log(tramo);
 
 
 function jsonToDate(json){

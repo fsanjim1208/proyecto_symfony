@@ -32,16 +32,17 @@
     
     <div class="c-contentForm">
         <h2 class="text-primary text-uppercase mt-5">Iniciar sesion</h2>
-        <form class="centraFormulario" action="/home">
+        <form class="centraFormulario" action="{{ path('app_login') }}" method="post">
+
             <div class="row g-3">
                 <div class="col-md-6">
                     <div class="form-floating">
-                        <input type="email" class="form-control" id="email" placeholder="Email">
-                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="username" name="_username" placeholder="Email" value="{{last_username}}">
+                        <label for="username">Email</label>
                     </div>
                     <br>
                     <div class="form-floating">
-                        <input type="password" class="form-control" id="password" placeholder="Contraseña">
+                        <input type="password" class="form-control" id="password" name="_password" placeholder="Contraseña">
                         <label for="password">Contraseña</label>
                     </div>
                     <br>
@@ -69,6 +70,6 @@
 
 
 
-    
+    {{dump()}}
 {% endblock %}
 
