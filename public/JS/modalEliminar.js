@@ -12,17 +12,19 @@ $(function(){
         ).done(function(data){
             console.log(data)
             var nombre=data.nombre;
-
+            var img=data.imagen;
+            console.log(data)
             var plantilla=`
                 <div>
                     <h4>`+nombre+`</h4>
+                    <img src="`+img+`" class="c-imagen c-imagen--juegos"></img>
                 </div>`;
 
             jqPlantilla=$(plantilla);
 
             jqPlantilla.dialog({
                 title: "¿Está seguro que desea eliminarlo?",
-                height: 200,
+                height: 280,
                 width: 400,
                 modal: true,
                 buttons: {
@@ -40,7 +42,5 @@ $(function(){
 
         });
     })
-
-
     // console.log(boton)
 })

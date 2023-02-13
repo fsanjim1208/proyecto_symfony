@@ -9,7 +9,7 @@ use App\Entity\Juego;
 use App\Entity\Tramo;
 use App\Repository\JuegoRepository;
 use Doctrine\Persistence\ManagerRegistry;
- 
+use Knp\Component\Pager\PaginatorInterface;
 
     class MiController extends AbstractController
     {
@@ -70,12 +70,31 @@ use Doctrine\Persistence\ManagerRegistry;
         
 
         #[Route('/listadosJuegos' , name:"app_listado_juegos")]
-        public function mantejuegos()
+        public function mantejuegos(Request $request,ManagerRegistry $doctrine, PaginatorInterface $paginator)
         {
 
             $juegos = $this->doctrine
             ->getRepository(Juego::class)
             ->findAll();
+
+
+            // // Retrieve the entity manager of Doctrine
+            // $em =  $doctrine->getManager();
+            // // Get some repository of data, in our case we have an Appointments entity
+            // $appointmentsRepository = $em->getRepository(Juego::class);
+                    
+
+
+            // $juegos = $appointmentsRepository
+            // ->findAll();
+
+            // Paginate the results of the query
+            $juegos = $paginator->paginate($juegos, $request->query->getInt('page', 1),4);
+
+            // Render the twig view
+            // return $this->render('default/index.html.twig', [
+            //     'appointments' => $appointments
+            // ]);
     
             return $this->render('listados/listadosJuegos.html.twig',['juegos' => $juegos]);
         }
@@ -91,29 +110,5 @@ use Doctrine\Persistence\ManagerRegistry;
         //     return $this->render('Editar/editaJuegos.html.twig',['juego' => $juego]);
         // }
 
-
-
-        #[Route('/juegos2' , name:"listados", methods:"GET")]
-        public function indexAction($currentPage = 1)
-        {
-
-            $limit = 1;
-            $juegos = $this->doctrine
-            ->getRepository(Juego::class)
-            ->getAllPers($currentPage, $limit);
-            
-            $juegosResultado = $juegos['paginator'];
-            $juegosQueryCompleta =  $juegos['query'];
-
-            $maxPages = ceil($juegos['paginator']->count() / $limit);
-
-            return $this->render('juegos2.html.twig', array(
-                    'juego' => $juegos,
-                    'juegos' => $juegosResultado,
-                    'maxPages'=>$maxPages,
-                    'thisPage' => $currentPage,
-                    'all_items' => $juegosQueryCompleta
-                ) );
-        }
     }
 ?>

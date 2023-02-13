@@ -9,7 +9,7 @@ use App\Repository\JuegoRepository;
 use App\Form\JuegoType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\String\Slugger\SluggerInterface;
- 
+use Knp\Component\Pager\PaginatorInterface;
 
     class pruebaController extends AbstractController
     {
@@ -34,68 +34,36 @@ use Symfony\Component\String\Slugger\SluggerInterface;
             if ($form->isSubmitted() && $form->isValid()) {
                 $juego = $form->getData();
 
-                // dd($producto);
-                if ($form->get('img')->getData() == null){
+                $rutaimagen = $form->get('img')->getData();
 
-                }
-                else{
-                    $rutaimagen = $form->get('img')->getData();
+                if ($rutaimagen) {
+                    $originalFilename = pathinfo($rutaimagen->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = 'Imagenes/juego/'.$safeFilename.'-'.uniqid().'.'.$rutaimagen->guessExtension();
 
-                    // this condition is needed because the 'brochure' field is not required
-                    // so the PDF file must be processed only when a file is uploaded
-                    if ($rutaimagen) {
-                        $originalFilename = pathinfo($rutaimagen->getClientOriginalName(), PATHINFO_FILENAME);
-                        // this is needed to safely include the file name as part of the URL
-                        $safeFilename = $slugger->slug($originalFilename);
-                        $newFilename = $safeFilename.'-'.uniqid().'.'.$rutaimagen->guessExtension();
-    
-                        // Move the file to the directory where brochures are stored
-                        try {
-                            $rutaimagen->move(
-                                $this->getParameter('img_directory'),
-                                $newFilename
-                            );
-                        } catch (FileException $e) {
-                            // ... handle exception if something happens during file upload
-                        }
-    
-                        // updates the 'brochureFilename' property to store the PDF file name
-                        // instead of its contents
-                        $producto->setImagen($newFilename);
+                    
+                    try {
+                        $rutaimagen->move(
+                            $this->getParameter('img_directory_juego'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
                     }
-    
-                    $entityManager->persist($juego);
-                    $entityManager->flush();
+
+                    $juego->setImg($newFilename);
                 }
-                
+
+                $entityManager->persist($juego);
+                $entityManager->flush();
 
                 // $ProductoRepository= new ProductoRepository($doctrine);
                 // $ProductoRepository->save($producto);
     
-                return $this->redirectToRoute('app_home');
+                return $this->redirect($this->generateUrl('app_listado_juegos'));
+            }
 
-                // $file = $juego->getImg();
-
-                // // Generar un numbre único para el archivo antes de guardarlo
-                // $fileName = md5(uniqid()).'.'.$file->guessExtension();
-
-                // // Mover el archivo al directorio donde se guardan los curriculums
-                // $cvDir = $this->container->getparameter('kernel.root_dir').'/../web/uploads/cv';
-                // $file->move($cvDir, $fileName);
-
-                // // Actualizar la propiedad curriculum para guardar el nombre de archivo PDF
-                // // en lugar de sus contenidos
-                // $juego->setImg($fileName);
-
-            // ... persist la variable $usuario o cualquier otra tarea
-
-            return $this->redirect($this->generateUrl('app_product_list'));
-        }
-            // return $this->render('producto.html.twig', [
-            //     'form' => $form,
-            
-            //]);
-            // return $this->render('Editar/editaJuegos.html.twig',['juego' => $juego]);
             return $this-> render('prueba/prueba.html.twig',[
                 'form' => $form,
                 'juego' => $juego,

@@ -8,6 +8,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
+use App\Entity\Festivo;
+use App\Entity\Evento;
+use App\Entity\Tramo;
+use App\Entity\Participa;
+use App\Entity\Presentacion;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -52,7 +57,28 @@ class DashboardController extends AbstractDashboardController
             MenuItem::subMenu('Usuarios', 'fa fa-group')->setSubItems([
                 MenuItem::linkToCrud('Nuevo','fa fa-plus-square', User::class) ->setAction('new'),
                 MenuItem::linkToCrud('Listado','fa fa-edit', User::class),
-            ])
+            ]),
+            MenuItem::subMenu('Festivos', 'fa fa-calendar')->setSubItems([
+                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Festivo::class) ->setAction('new'),
+                MenuItem::linkToCrud('Listado','fa fa-edit', Festivo::class),
+            ]),
+            MenuItem::subMenu('Eventos', 'fa fa-bell')->setSubItems([
+                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Evento::class) ->setAction('new'),
+                MenuItem::linkToCrud('Listado','fa fa-edit', Evento::class),
+
+            ]),
+            MenuItem::subMenu('Tramos', 'fa fa-clock-o')->setSubItems([
+                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Tramo::class) ->setAction('new'),
+                MenuItem::linkToCrud('Listado','fa fa-edit', Tramo::class),
+            ]),
+            MenuItem::subMenu('Participaciones')->setSubItems([
+                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Participa::class) ->setAction('new'),
+                MenuItem::linkToCrud('Listado','fa fa-edit', Participa::class),
+            ]),
+            MenuItem::subMenu('Presentaciones')->setSubItems([
+                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Presentacion::class) ->setAction('new'),
+                MenuItem::linkToCrud('Listado','fa fa-edit', Presentacion::class),
+            ]),
            
         ];
     }

@@ -22,6 +22,19 @@
     border: 1px solid red;
 }
 
+.navigation{
+    margin-left: 44%;
+}
+
+.navigation a{
+    margin: 5px;
+}
+
+.current{
+    margin-left: 2px;
+    margin-right: 2px;
+
+}
 
 .almacen{
     /* position: absolute;

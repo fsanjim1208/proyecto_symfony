@@ -74,8 +74,9 @@ function pintaMesas(){
         })
     
         $(".sala .mesa").draggable({  
-            revert:false,
-            helper: "original",              
+            // revert: true,
+            // accept: ".sala, .almacen",
+            // helper: "clone",              
             stop: function(ev, ui){
                 // console.log(parseInt(this.style.top));
                 //console.log("eoo "+ui.helper.prevObject);
@@ -87,20 +88,34 @@ function pintaMesas(){
                     "alto":parseInt(this.style.height)
                 });
                 // console.log(mesa);
-
-                mesa.solapa();
+                
+                //mesa.solapa();
+                $(this).append(mesa);
+                    $.ajax( "http://localhost:8000/api/mesa/"+this.id.split("_")[1],  
+                    {
+                        method:"PUT",
+                        dataType:"json",
+                        crossDomain: true,
+                        data: {
+                            "x" : parseInt(this.style.top), 
+                            "y" : parseInt(this.style.left), 
+                            "ancho":parseInt(this.style.width),
+                            "alto":parseInt(this.style.height)
+                        },
+                    })
+                    
                 if(mesa.solapa()){
-
+                    
                 }
                 else{
 
-                    console.log(mesa);
-                    console.log(this)
+                    // console.log(mesa);
+                    // console.log(this)
                     // mesa.css({
                     //     "top":ui.offset.top,
                     //     "left":ui.offset.left});
+                    
                     $(this).append(mesa);
-
                     $.ajax( "http://localhost:8000/api/mesa/"+this.id.split("_")[1],  
                     {
                         method:"PUT",
@@ -160,7 +175,7 @@ Mesa.prototype.solapa= function(){
                 //que solo el bottom este dentro de la caja
                 ((MMBotton > MCTop && MMBotton < MCBotton) && (MMLeft < MCLeft && MMRight > MCRight)))
             {
-                // console.log("se choca");
+                console.log("se choca");
                 
                 solapado= true;
                 break;
