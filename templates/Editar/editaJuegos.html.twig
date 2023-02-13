@@ -1,0 +1,57 @@
+
+{% extends 'base2.html.twig' %}
+
+
+{% block body %}
+    <div class="c-contentForm">
+        <h2 class="text-primary text-uppercase mt-5">Editar Juegos</h2>
+        <h4>{{juego.nombre}}</h4>
+        <form class="centraFormulario" action="{{ path('app_login') }}" method="post">
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{juego.nombre}}">
+                        <label for="Nombre">Nombre</label>
+                    </div>
+                    <div class="form-floating mb-4">
+                        <input type="text" class="form-control" id="Editorial" name="Editorial" placeholder="Editorial" value="{{juego.editorial}}">
+                        <label for="Editorial">Editorial</label>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-floating mb-4 col">
+                            <input type="number" class="form-control" id="ancho" name="ancho" placeholder="Ancho" value="{{juego.ancho}}">
+                            <label for="ancho" class="ps-4">Ancho</label>
+                        </div>
+                        <div class="form-floating mb-4 col">
+                            <input type="number" class="form-control" id="alto" name="alto" placeholder="Alto" value="{{juego.alto}}">
+                            <label for="alto" class="ps-4">Alto</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-floating mb-4 col">
+                            <input type="number" class="form-control" id="jugadores_min" name="jugadores_min" placeholder="Jugadores Minimo" value="{{ juego.getJugadoresMin() }}">
+                            <label for="jugadores_min" class="ps-4">Jugadores Minimo</label>
+                        </div>
+                        <div class="form-floating mb-4 col">
+                            <input type="number" class="form-control" id="jugadores_max" name="jugadores_max" placeholder="Jugadores Maximo" value="{{juego.getJugadoresMax()}}">
+                            <label for="jugadores_max" class="ps-4">Jugadores Maximo</label>
+                        </div>
+                    </div>
+
+                    <div class="form-floating mb-4">
+                        <img src="../{{juego.img}}" class="c-imagen c-imagen--juegos"></img>
+                        <input type="file" class="" id="Editorial" name="Editorial" placeholder="Editorial" value="{{juego.editorial}}">
+                    </div>
+
+                    <button class="btn btn-primary w-100 py-3" type="submit">Iniciar Sesion</button>
+                    
+                </div>
+            </div>
+        </form>
+    </div>
+
+    {{dump()}}
+{% endblock %}

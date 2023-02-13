@@ -45,4 +45,30 @@ class ApiJuegosController extends AbstractController
 
         return $this->json($arrayJuegos);
     } 
+
+    #[Route('/juego/{id}',name:"juego_show", methods:"GET")]
+    public function show(int $id): Response
+    {
+        $juego = $this->doctrine
+            ->getRepository(Juego::class)
+            ->find($id);
+ 
+        if (!$juego) {
+ 
+            return $this->json('No hay juego por esa id: ' . $id, 404);
+        }
+ 
+        
+        $arrayJuegos = [
+            'id' => $juego->getId(),
+            'nombre' => $juego->getNombre(),
+            'jugadores_min' => $juego->getJugadoresMin(),
+            'jugadores_max' => $juego->getJugadoresMax(),
+            'imagen' => $juego->getImg(),
+            'ancho' => $juego->getAncho(),
+            'alto' => $juego->getAlto(),
+        ];
+
+        return $this->json($arrayJuegos);
+    }
 }

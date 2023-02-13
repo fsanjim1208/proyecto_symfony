@@ -1,0 +1,48 @@
+
+{% extends "base2.html.twig" %}
+    {% block javascripts %}
+        <script src="{{ asset('JS/modalEliminar.js') }}" type="text/javascript"></script>
+
+    {% endblock %}
+    {% block body %}
+
+    <div id="juego" class=" mt-4">
+
+        <h3 class="text-primary mb-4 ms-5">Listado de juegos</h3>
+        <table class=" table table-hover table-bordered table-condensed miTabla">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Editorial</th>
+                    <th>Ancho</th>
+                    <th>Alto</th>
+                    <th>Jugadores min</th>
+                    <th>Jugadores max</th>
+                    <th>Imagen</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for juego in juegos %}
+                    <tr>
+                        <td>{{ juego.nombre }}</td>
+                        <td>{{ juego.editorial }}</td>
+                        <td>{{ juego.Ancho }}</td>
+                        <td>{{ juego.Alto }}</td>
+                        <td>{{ juego.getJugadoresMin() }}</td>
+                        <td>{{ juego.getJugadoresMax() }}</td>
+                        <td><img src={{juego.img}} class="c-imagen c-imagen--juegos" ></img></td>
+                        <td>
+                            <a href="/editaJuegos/{{juego.id}}"><button type="button" class="btn btn-primary editar ps-3 pe-3 mb-3" id="{{juego.id}}"><i class="fa fa-edit"></i>  Editar</button></a> 
+                            <button type="button" class="btn btn-danger eliminar" id="{{juego.id}}"><i class="fa fa-trash"></i>  Eliminar</button> 
+                            {# <a href="{{ path('app_home') }}"><i class="fa fa-edit" style="font-size:24px" data-toggle="modal" data-target="#Edit{{juego.id}}"></i></a>
+                            <a href=""><i class="fa fa-trash" style="font-size:24px"  data-toggle="modal" data-target="#Delete{{juego.id}}"></i></a> #}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {{dump()}}
+    {% endblock %}

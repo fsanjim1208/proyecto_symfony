@@ -46,11 +46,12 @@ class DashboardController extends AbstractDashboardController
         // // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
 
         return [
+            MenuItem::linkToRoute('Salir', 'fa fa-mail-reply', 'app_home'),
             MenuItem::linkToDashboard('home', 'fa fa-home'),
-            MenuItem::linkToLogout('Logout', 'fa fa-exit'),
-            MenuItem::subMenu('Usuarios', 'fa ...')->setSubItems([
-                MenuItem::linkToCrud('Nuevo','fa ...', User::class) ->setAction('new'),
-                MenuItem::linkToCrud('Listado','fa ...', User::class),
+            MenuItem::linkToLogout('Logout', 'fa fa-power-off'),
+            MenuItem::subMenu('Usuarios', 'fa fa-group')->setSubItems([
+                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', User::class) ->setAction('new'),
+                MenuItem::linkToCrud('Listado','fa fa-edit', User::class),
             ])
            
         ];

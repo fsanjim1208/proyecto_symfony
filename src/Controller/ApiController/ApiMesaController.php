@@ -55,7 +55,7 @@ class ApiMesaController extends AbstractController
  
         if (!$mesa) {
  
-            return $this->json('No hay mesas por esa id: ' . $id, 404);
+            return $this->json(['No hay mesas por esa id: ' . $id, 'codigo:404 '], 404);
         }
  
         $arrayMesas[] = [
@@ -79,7 +79,7 @@ class ApiMesaController extends AbstractController
         $mesa = $entityManager->getRepository(Mesa::class)->find($id);
         //var_dump($producto);
         if (!$mesa) {
-            return $this->json('No se encuentran mesas por esa id:  ' . $id, 404);
+            return $this->json(['No hay mesas por esa id: ' . $id, 'codigo:404 '], 404);
         }
  
         $mesa->setAncho($request->request->get('ancho'));
@@ -100,7 +100,7 @@ class ApiMesaController extends AbstractController
             'imagen' => $mesa->getImagen(),
         ];
          
-        return $this->json($arrayMesas);
+        return $this->json(['Guardada la mesa con id: '. $id ,'codigo: 201',$arrayMesas],201);
     }
  
 
@@ -120,7 +120,7 @@ class ApiMesaController extends AbstractController
         $entityManager->persist($mesa);
         $entityManager->flush();
  
-        return $this->json('Creada la nueva mesa con id ' . $mesa->getId());
+        return $this->json(['Creada la nueva mesa con id ' . $mesa->getId(), 'codigo: 201'], 201);
     }
 
     #[Route('/mesa/{id}',name:"mesa_delete", methods:"DELETE")]
@@ -130,13 +130,13 @@ class ApiMesaController extends AbstractController
         $mesa = $entityManager->getRepository(Mesa::class)->find($id);
  
         if (!$mesa) {
-            return $this->json('No project found for id' . $id, 404);
+            return $this->json(['No hay mesas por esa id: ' . $id, 'codigo: 404 '], 404);
         }
  
         $entityManager->remove($mesa);
         $entityManager->flush();
  
-        return $this->json('Deleted a project successfully with id ' . $id);
+        return $this->json(['Borrada correctamente la mesa con id ' . $id,'codigo: 200']);
     }
  
        

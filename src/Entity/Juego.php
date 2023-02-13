@@ -198,5 +198,15 @@ class Juego
         return $this;
     }
 
+    public function paginate($dql, $page = 1, $limit = 3): Paginator
+    {
+        $paginator = new Paginator($dql);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1)) // Offset
+            ->setMaxResults($limit); // Limit
+
+        return $paginator;
+    }
 
 }

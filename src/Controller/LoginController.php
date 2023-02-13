@@ -29,10 +29,10 @@ class LoginController extends AbstractController
         ]);
     }
 
-    #[Route('/logout', name: 'app_logout', methods:['GET'])]
+    #[Route('/logout', name: 'app_logout')]
     public function logout(): Response
     {
-
+        return $this->render('main/home.html.twig');
     }
 
     #[Route('/setAdmin/{id}', name: 'app_setAdmin')]

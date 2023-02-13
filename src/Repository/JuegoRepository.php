@@ -41,6 +41,19 @@ class JuegoRepository extends ServiceEntityRepository
         }
     }
 
+    public function getAllPers($currentPage = 1, $limit = 3)
+    {
+        // Create our query
+        $query = $this->createQueryBuilder('p')
+            ->getQuery();
+
+        $juego= new Juego();
+        
+        $paginator = $juego->paginate($query, $currentPage, $limit);
+
+        return array('paginator' => $paginator, 'query' => $query);
+    }
+
 
 //    /**
 //     * @return Juego[] Returns an array of Juego objects

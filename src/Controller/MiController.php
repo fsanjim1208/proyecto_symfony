@@ -17,7 +17,7 @@ use Doctrine\Persistence\ManagerRegistry;
         public function __construct(private ManagerRegistry $doctrine) {}
 
 
-        #[Route('/home', name: 'home')]
+        #[Route('/home', name: 'app_home')]
         public function home(  Request $request):response
         {
             return $this->render('main/home.html.twig');
@@ -66,6 +66,54 @@ use Doctrine\Persistence\ManagerRegistry;
             ->getRepository(Juego::class)
             ->findAll();
             return $this->render('juegos.html.twig',['juegos'=>$juegos]);
+        }
+        
+
+        #[Route('/listadosJuegos' , name:"app_listado_juegos")]
+        public function mantejuegos()
+        {
+
+            $juegos = $this->doctrine
+            ->getRepository(Juego::class)
+            ->findAll();
+    
+            return $this->render('listados/listadosJuegos.html.twig',['juegos' => $juegos]);
+        }
+
+        // #[Route('/editaJuegos/{id}' , name:"app_edita_juegos")]
+        // public function editajuegos($id)
+        // {
+
+        //     $juego = $this->doctrine
+        //     ->getRepository(Juego::class)
+        //     ->find($id);
+    
+        //     return $this->render('Editar/editaJuegos.html.twig',['juego' => $juego]);
+        // }
+
+
+
+        #[Route('/juegos2' , name:"listados", methods:"GET")]
+        public function indexAction($currentPage = 1)
+        {
+
+            $limit = 1;
+            $juegos = $this->doctrine
+            ->getRepository(Juego::class)
+            ->getAllPers($currentPage, $limit);
+            
+            $juegosResultado = $juegos['paginator'];
+            $juegosQueryCompleta =  $juegos['query'];
+
+            $maxPages = ceil($juegos['paginator']->count() / $limit);
+
+            return $this->render('juegos2.html.twig', array(
+                    'juego' => $juegos,
+                    'juegos' => $juegosResultado,
+                    'maxPages'=>$maxPages,
+                    'thisPage' => $currentPage,
+                    'all_items' => $juegosQueryCompleta
+                ) );
         }
     }
 ?>

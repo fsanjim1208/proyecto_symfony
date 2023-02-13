@@ -13,23 +13,51 @@
                 <tr>
                     <th>Nombre</th>
                     <th>Editorial</th>
+                    <th>Ancho</th>
+                    <th>Alto</th>
                     <th>Jugadores min</th>
                     <th>Jugadores max</th>
                     <th>Imagen</th>
                 </tr>
             </thead>
             <tbody>
-                {% for juego in juegos %}
+                {# {% for juego in juegos %}
                     <tr>
                         <td>{{ juego.nombre }}</td>
                         <td>{{ juego.editorial }}</td>
+                        <td>{{ juego.Ancho }}</td>
+                        <td>{{ juego.Alto }}</td>
                         <td>{{ juego.getJugadoresMin() }}</td> 
                         <td>{{ juego.getJugadoresMax() }}</td> 
                         <td><img src={{juego.img}} class="c-imagen c-imagen--juegos" ></img></td>
                     </tr>
-                {% endfor %}
+                {% endfor %} #}
             </tbody>
         </table>
+
+        {% if maxPages > 1 %}
+            <ul>
+            {% if thisPage > 1 %}
+                <li >
+                     <a href="{{ path('#', {currentPage: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+                </li>
+            {% endif %}
+
+        {# Render each page number #}
+        {% for i in 1..maxPages %}
+            <li>
+                <a href="{{ path('listados', {currentPage: i}) }}">{{ i }}</a>
+            </li>
+        {% endfor %}
+
+        {# `»` arrow #}
+        {%if thisPage < maxPages %}
+            <li>
+                <a href="{{ path('listados', {currentPage: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}
     </div>
 
     {{dump()}}

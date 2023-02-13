@@ -4,7 +4,10 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;    
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud; 
+use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;      
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;      
+ 
 
 class UserCrudController extends AbstractCrudController
 {
@@ -13,16 +16,29 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
-    /*
+    
     public function configureFields(string $pageName): iterable
     {
+
+        if (Crud::PAGE_EDIT == $pageName){
+            return[
+                'Nombre',
+                'Email',
+                ChoiceField::new('roles')->setChoices(['ADMIN' => 'ROLE_ADMIN', 'USER' => 'ROLE_USER'])->allowMultipleChoices(),
+            ];
+        }
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            
+            'Nombre',
+            'Apellido1',
+            'Apellido2',
+            'Email',
+            'Id_telegram',
+            // 'Password',
+            BooleanField::new('Admin'),
         ];
     }
-    */
+    
 
     public function configureCrud(Crud $crud): Crud
 {
@@ -36,11 +52,11 @@ class UserCrudController extends AbstractCrudController
         // ->setSearchFields(null)
         // // call this method to focus the search input automatically when loading the 'index' page
         // ->setAutofocusSearch()
-
+        
         // // defines the initial sorting applied to the list of entities
         // // (user can later change this sorting by clicking on the table columns)
         // ->setDefaultSort(['id' => 'DESC'])
-        // ->setDefaultSort(['id' => 'DESC', 'title' => 'ASC', 'startsAt' => 'DESC'])
+        ->setDefaultSort(['id' => 'ASC', 'email' => 'ASC', 'Nombre' => 'DESC'])
         // // you can sort by Doctrine associations up to two levels
         // ->setDefaultSort(['seller.name' => 'ASC'])
 
