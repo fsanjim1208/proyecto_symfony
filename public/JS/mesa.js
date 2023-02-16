@@ -15,6 +15,7 @@ function cogeMesas(){
         dataType:"json",
         crossDomain: true,
         async:false,
+        
     }).done(function(data)
     {
 
@@ -103,7 +104,7 @@ function pintaMesas(){
                             "alto":parseInt(this.style.height)
                         },
                     })
-                    
+
                 if(mesa.solapa()){
                     
                 }

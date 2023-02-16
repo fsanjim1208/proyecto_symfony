@@ -39,6 +39,19 @@ class TramoRepository extends ServiceEntityRepository
         }
     }
 
+
+
+
+    public function findOneByIncio($value): ?Tramo
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.incio = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 //    /**
 //     * @return Tramo[] Returns an array of Tramo objects
 //     */

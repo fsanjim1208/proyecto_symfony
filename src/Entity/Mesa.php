@@ -33,9 +33,13 @@ class Mesa
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $Imagen = null;
 
+    #[ORM\OneToMany(mappedBy: 'mesa', targetEntity: Disposicion::class)]
+    private Collection $disposiciones;
+
     public function __construct()
     {
         $this->reserva = new ArrayCollection();
+        $this->disposiciones = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -129,6 +133,36 @@ class Mesa
     public function setImagen(?string $Imagen): self
     {
         $this->Imagen = $Imagen;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Disposicion>
+     */
+    public function getDisposiciones(): Collection
+    {
+        return $this->disposiciones;
+    }
+
+    public function addDisposicione(Disposicion $disposicione): self
+    {
+        if (!$this->disposiciones->contains($disposicione)) {
+            $this->disposiciones->add($disposicione);
+            $disposicione->setMesa($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDisposicione(Disposicion $disposicione): self
+    {
+        if ($this->disposiciones->removeElement($disposicione)) {
+            // set the owning side to null (unless already changed)
+            if ($disposicione->getMesa() === $this) {
+                $disposicione->setMesa(null);
+            }
+        }
 
         return $this;
     }

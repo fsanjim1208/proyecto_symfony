@@ -14,35 +14,35 @@ class Tramo
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $incio = null;
+    #[ORM\Column(length: 50)]
+    private ?String $incio = null;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $fin = null;
+    #[ORM\Column(length: 50)]
+    private ?String $fin = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getIncio(): ?\DateTimeInterface
+    public function getIncio(): ?String
     {
         return $this->incio;
     }
 
-    public function setIncio(\DateTimeInterface $incio): self
+    public function setIncio(?String $incio): self
     {
         $this->incio = $incio;
 
         return $this;
     }
 
-    public function getFin(): ?\DateTimeInterface
+    public function getFin(): ?String
     {
         return $this->fin;
     }
 
-    public function setFin(\DateTimeInterface $fin): self
+    public function setFin(?String $fin): self
     {
         $this->fin = $fin;
 

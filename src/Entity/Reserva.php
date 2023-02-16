@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReservaRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -14,17 +16,14 @@ class Reserva
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $fecha_inicio = null;
+    #[ORM\Column(length: 50)]
+    private ?String $fecha_inicio = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $fecha_anulacion = null;
+    #[ORM\Column(length: 50)]
+    private ?String $fecha_anulacion = null;
 
     #[ORM\Column]
     private ?bool $presentado = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $tramo_inicio = null;
 
     #[ORM\ManyToOne(inversedBy: 'reserva')]
     #[ORM\JoinColumn(nullable: false)]
@@ -34,29 +33,38 @@ class Reserva
     #[ORM\JoinColumn(nullable: false)]
     private ?Mesa $mesa = null;
 
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Tramo $tramo = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reservas')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $usuario = null;
+
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFechaInicio(): ?\DateTimeInterface
+    public function getFechaInicio(): ?String
     {
         return $this->fecha_inicio;
     }
 
-    public function setFechaInicio(\DateTimeInterface $fecha_inicio): self
+    public function setFechaInicio(?String $fecha_inicio): self
     {
         $this->fecha_inicio = $fecha_inicio;
 
         return $this;
     }
 
-    public function getFechaAnulacion(): ?\DateTimeInterface
+    public function getFechaAnulacion(): ?String
     {
         return $this->fecha_anulacion;
     }
 
-    public function setFechaAnulacion(?\DateTimeInterface $fecha_anulacion): self
+    public function setFechaAnulacion(?String $fecha_anulacion): self
     {
         $this->fecha_anulacion = $fecha_anulacion;
 
@@ -71,18 +79,6 @@ class Reserva
     public function setPresentado(bool $presentado): self
     {
         $this->presentado = $presentado;
-
-        return $this;
-    }
-
-    public function getTramoInicio(): ?\DateTimeInterface
-    {
-        return $this->tramo_inicio;
-    }
-
-    public function setTramoInicio(\DateTimeInterface $tramo_inicio): self
-    {
-        $this->tramo_inicio = $tramo_inicio;
 
         return $this;
     }
@@ -110,4 +106,34 @@ class Reserva
 
         return $this;
     }
+
+    public function getTramo(): ?Tramo
+    {
+        return $this->tramo;
+    }
+
+    public function setTramo(?Tramo $tramo): self
+    {
+        $this->tramo = $tramo;
+
+        return $this;
+    }
+
+    public function getUsuario(): ?User
+    {
+        return $this->usuario;
+    }
+
+    public function setUsuario(?User $usuario): self
+    {
+        $this->usuario = $usuario;
+
+        return $this;
+    }
+
+
+
+
+
+   
 }

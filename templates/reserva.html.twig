@@ -7,38 +7,46 @@
 
         <div class="c-contentForm formreserva">
             <h2 class="text-primary text-uppercase mt-5">Reservar</h2>
-            <form class="ms-5" action="/home">
+            <form class="ms-5" action="/home" id="form_reserva">
                 <div class="row g-6">
                     <div class="col-md-13">
+                        <label id="errorFecha" class="text-danger mt-2 mb-2"></label>
                         <div class="form-floating">
                             <input type="text" id="desde" class="form-control" placeholder="Fecha">
                             <label for="desde">Fecha</label>
                         </div>
-                        <br>
+                        <label id="errorHora" class="text-danger mt-2 mb-2"></label>
                         <div class="form-floating">
                             <select id="tramo" class="form-control" placeholder="Hora">
+                                <option>Seleccione un tamo horario</option>
                                 {% for tramo in tramos %}
-                                    <option>{{tramo.getIncio().format('H:i:s')}} : {{tramo.getFin().format('H:i:s')}}</option>
+                                    <option>{{tramo.getIncio()}} : {{tramo.getFin()}}</option>
                                 {% endfor %}
                             </select> 
                             <label for="tramo">Hora </label>
                         </div>
-                        <br>
+                        <label id="errorJugadores" class="text-danger mt-2 mb-2"></label>
                         <div class="form-floating">
                             <input type="number" id="jugadores" class="form-control" placeholder="Numero de jugadores">
                             <label for="jugadores">Numero de jugadores</label>
                         </div>
-                        <br>
+                        <label id="errorJuegos" class="text-danger mt-2 mb-2"></label>
                         <div class="form-floating">
                             <select id="juegos" class="form-control" placeholder="Juego">
+                                <option>Seleccione un juego</option>
                                 {% for juego in juegos %}
                                     <option>{{juego.Nombre}}</option>
                                 {% endfor %}
                             </select> 
                             <label for="Juegos">Juego </label>
                         </div>
+                        <label id="errorMesa" class="text-danger mt-2 mb-2"></label>
+                        <div class="form-floating">
+                            <input type="text" id="idMesa" class="form-control" placeholder="Seleccione la mesa">
+                            <label for="idMesa">Seleccione la mesa</label>
+                        </div>
                         <br>
-                        <button class="btn btn-primary w-100 py-3" type="submit">Completar Reserva</button>
+                        <button class="btn btn-primary w-100 py-3 mb-3" type="submit" id="reserva">Completar Reserva</button>
                     </div>
                 </div>
             </form>

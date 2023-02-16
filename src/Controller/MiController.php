@@ -59,12 +59,15 @@ use Knp\Component\Pager\PaginatorInterface;
 
 
         #[Route('/juegos')]
-        public function juegos( Request $request):response
+        public function juegos( Request $request,PaginatorInterface $paginator):response
         {
         
             $juegos = $this->doctrine
             ->getRepository(Juego::class)
             ->findAll();
+
+            $juegos = $paginator->paginate($juegos, $request->query->getInt('page', 1),4);
+
             return $this->render('juegos.html.twig',['juegos'=>$juegos]);
         }
         
@@ -77,25 +80,9 @@ use Knp\Component\Pager\PaginatorInterface;
             ->getRepository(Juego::class)
             ->findAll();
 
-
-            // // Retrieve the entity manager of Doctrine
-            // $em =  $doctrine->getManager();
-            // // Get some repository of data, in our case we have an Appointments entity
-            // $appointmentsRepository = $em->getRepository(Juego::class);
-                    
-
-
-            // $juegos = $appointmentsRepository
-            // ->findAll();
-
-            // Paginate the results of the query
             $juegos = $paginator->paginate($juegos, $request->query->getInt('page', 1),4);
 
-            // Render the twig view
-            // return $this->render('default/index.html.twig', [
-            //     'appointments' => $appointments
-            // ]);
-    
+
             return $this->render('listados/listadosJuegos.html.twig',['juegos' => $juegos]);
         }
 
