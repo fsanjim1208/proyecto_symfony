@@ -1,22 +1,25 @@
 $(function(){   
+
     var festivos=[];
+    var reservas=[];
     var formu=$("#form_reserva")
     var tramo=$("#tramo");
     var jugadores=$("#jugadores");
     var juegos=$("#juegos");
     var inputMesa=$("#idMesa")
     var mesa = $(".mesa")
+    console.log(mesa);
     var boton =$("#reserva")
     var errorHora=$("#errorHora");
     var errorFecha=$("#errorFecha");
     var errorJugadores=$("#errorJugadores");
     var errorJuego=$("#errorJuegos");
     var errorMesa=$("#errorMesa");
-
-    inputMesa.prop('disabled', true)
-    tramo.prop('disabled', true)
-    jugadores.prop('disabled', true)
-    juegos.prop('disabled', true)
+            var mesasdia=[];
+    inputMesa.prop('disabled', true);
+    tramo.prop('disabled', true);
+    jugadores.prop('disabled', true);
+    juegos.prop('disabled', true);
 
     $.ajax( "http://localhost:8000/api/festivo",  
     {
@@ -29,7 +32,20 @@ $(function(){
             festivos.push(jsonToDate(val));
         });
         
-    })
+    });
+
+    $.ajax( "http://localhost:8000/api/reserva",  
+    {
+        method:"GET",
+        dataType:"json",
+        crossDomain: true,
+        async: false,
+    }
+    ).done(function(data){
+        $.each( data, function( key, val ) {
+            reservas.push(val);
+        });
+    });
 
     function deshabilitaFechas(date) {
         var string = jQuery.datepicker.formatDate('dd/mm/yy', date);
@@ -60,8 +76,63 @@ $(function(){
         onSelect: function(text, obj){
             tramo.prop('disabled', false)
             jugadores.prop('disabled', false)
+            var dia= text.split("/")[0];
+            var mes= text.split("/")[1];
+            var anio= text.split("/")[2];
+            var fechaDisposicion= dia+"-"+mes+"-"+anio;
+            var disposicionBaseArray=[];
+            var disposicionDiaArray=[];
+
+            // console.log(disposicionesArray);
+            $.ajax( "http://localhost:8000/api/disposicion",  
+            {
+                method:"GET",
+                dataType:"json",
+                crossDomain: true,
+                async: false
+            }
+            ).done(function(data){
+                $.each( data, function( key, val ) {
+                    if(val.fecha==fechaDisposicion){
+                        disposicionDiaArray.push(val); 
+                    }
+                    else if(val.fecha=="00-00-0000"){
+                        disposicionBaseArray.push(val);
+                    }
+                });
+            });
+
+            if(disposicionDiaArray.length>0){
+                mesasdia= disposicionToMesa(disposicionDiaArray);
+            }
+            else{
+                mesasdia=disposicionToMesa(disposicionBaseArray);
+            }
+             
+            pintaMesas(mesasdia);  
+            console.log($(".mesa"))
+            $(".mesa").click(function(){
+                for (let i = 0; i < reservas.length; i++) {
+                    if(reservas[i].idMesa==this.id.split("_")[1] ){
+                        
+                        console.log("esta mesa esta reservada");
+                    }
+                    else{
+                        formu[0].idMesa.value=this.id;
+                    }
+                }
+            }) 
         }
     });
+    
+    // $(".mesa").click(function(){
+    //     for (let i = 0; i < reservas.length; i++) {
+    //         if(reservas[i].idMesa==this.id.split("_")[1]){
+    //             formu[0].idMesa.value=this.id;
+    //             console.log("esta mesa esta reservada");
+    //         }
+    //     }
+    // }) 
 
     jugadores.change(function(ev){
         ev.preventDefault();
@@ -95,11 +166,8 @@ $(function(){
             });
         })
     });
-    
-    mesa.click(function(){
-        formu[0].idMesa.value=this.id;
-        // this.style.backgroundColor = '#FF00FF';
-    })
+
+
     
     
     // console.log(tramo);
@@ -199,33 +267,5 @@ $(function(){
 
 
     })
-
-function jsonToDate(json){
-    var day="";
-    var month="";
-    if(json.day<10){
-        day="0"+json.day;
-    }
-    else{
-        day=json.day;
-    }
-
-    if(json.month<10){
-        month="0"+json.month;
-    }
-    else{
-        month=json.month;
-    }
-    return day+"/"+month+"/"+json.year;
-}
-    
-
-
-
-
-
-
-
-
-
 })
+
