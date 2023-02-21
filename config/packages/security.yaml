@@ -39,7 +39,6 @@ security:
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/mesas, roles: ROLE_USER }
-        - { path: ^/juegos, roles: ROLE_USER }
 
 when@test:
     security:

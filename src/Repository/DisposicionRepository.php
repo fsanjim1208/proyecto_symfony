@@ -39,20 +39,32 @@ class DisposicionRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Disposicion[] Returns an array of Disposicion objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('d')
-//            ->andWhere('d.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('d.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+    * @return Disposicion[] Returns an array of Disposicion objects
+    */
+    public function findByFecha($value): array
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.fecha = :val')
+            ->setParameter('val', $value)
+            ->orderBy('d.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByFechaAndIdMesa($fecha, $idMesa): ?Disposicion
+    {
+        return $this->createQueryBuilder('d')
+            ->andWhere('d.fecha = :val')
+            ->andWhere('d.mesa = :id')
+            ->setParameter('val', $fecha)
+            ->setParameter('id', $idMesa)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
 //    public function findOneBySomeField($value): ?Disposicion
 //    {

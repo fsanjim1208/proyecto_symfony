@@ -1,16 +1,17 @@
 {% extends 'base2.html.twig' %}
-
 {% block body %}
     <div class="c-contentForm">
-        <h2 class="text-primary text-uppercase mt-5">Edita el juego</h2>
+        <h2 class="text-primary text-uppercase mt-4">Crear nuevo juego</h2>
         {{ form_start(form,{'attr' : {'class': 'centraFormulario'}}) }}
             <div class="row g-3">
                 <div class="col-md-6">
-                    <div class="form-floating mb-4">
-                        {{ form_row(form.nombre,{'attr' : {'class': 'form-control', 'placeholder':'Nombre'},label:'Nombre'}) }}
-                    </div>
-                    <div class="form-floating mb-4">
-                        {{ form_row(form.editorial,{'attr' : {'class': 'form-control','placeholder':'Editorial'},label:"Editorial"}) }}
+                    <div class="row">
+                        <div class="form-floating mb-4 col">
+                            {{ form_row(form.nombre,{'attr' : {'class': 'form-control', 'placeholder':'Nombre'},label:'Nombre'}) }}
+                        </div>
+                        <div class="form-floating mb-4 col">
+                            {{ form_row(form.editorial,{'attr' : {'class': 'form-control','placeholder':'Editorial'},label:"Editorial"}) }}
+                        </div>
                     </div>
                     <div class="row">
                         <div class="form-floating mb-4 col">
@@ -31,13 +32,19 @@
                             {{ form_row(form.jugadores_max,{'attr' : {'class': 'form-control','placeholder':'Máximo de Jugadores'},label:'Máximo de Jugadores'}) }}
                         </div>
                     </div>
-
+                    <label>Imagen</label>
                     <div class="form-floating mb-4">
-                        <img src="../{{juego.img}}" class="c-imagen c-imagen--juegos"></img>
-                        {{ form_row(form.img,{'attr' : {'class': 'form-control','placeholder':'Contraseña'},label:'Imagen'}) }}
+                        
+                        {{ form_row(form.img,{'attr' : {'class': 'form-control','placeholder':'Contraseña'}}) }}
                     </div>
-
-                    {{ form_row(form.save,{'attr' : {'class': 'btn btn-primary w-100 py-3'}})}}
+                    <div class="row">
+                        <div class="form-floating mb-4 col">
+                            <a href="{{path('app_listado_juegos')}}"><input class="btn btn-secondary w-100 py-3" value="Salir"></input></a>
+                        </div>
+                        <div class="form-floating mb-4 col">
+                            {{ form_row(form.save,{'attr' : {'class': 'btn btn-primary w-100 py-3'},'label':'Crear'})}}
+                        </div>
+                    </div>
                 </div>
             </div>
         {{ form_end(form) }}

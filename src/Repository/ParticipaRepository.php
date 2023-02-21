@@ -39,6 +39,32 @@ class ParticipaRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+    * @return Participa[] Returns an array of Participa objects
+    */
+    public function findByEventoId($value): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.evento = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.id', 'ASC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findOneByEventoAndUser($evento, $user): ?Participa
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.evento = :val')
+            ->setParameter('val', $evento)
+            ->andWhere('p.user = :valu')
+            ->setParameter('valu', $user)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
 //    /**
 //     * @return Participa[] Returns an array of Participa objects
 //     */

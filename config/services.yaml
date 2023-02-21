@@ -5,6 +5,8 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     img_directory_juego: '../public/Imagenes/juego'
+    img_directory_evento: '../public/Imagenes/evento'
+    telegram_bot_token: '6275526786:AAGx_6Yr-GvYRtW-slSFCDxKaf32mfyRhdo'
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -24,3 +26,14 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    # App\Service\BotTelegram:
+    #     arguments:
+    #         $token: 'NUESTRA_API_TOKEN_CODE'
+    #         $urlstart: 'https://api.telegram.org/bot'
+    #         $urlend: '/sendMessage'
+    #         $chatid: 'CHATID_DE_TELEGRAM'
+
+
+    Telegram\Bot\Api:
+        arguments:
+            - '%telegram_bot_token%'

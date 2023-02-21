@@ -16,57 +16,5 @@ use Knp\Component\Pager\PaginatorInterface;
         public function __construct(private ManagerRegistry $doctrine) {}
 
 
-        #[Route('/editaJuegos/{id}' , name:"app_edita_juegos")]
-        public function new( $id, Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
-        {
-            $entityManager= $doctrine->getManager();
-            $juego = $this->doctrine
-            ->getRepository(Juego::class)
-            ->find($id);
 
-            // $juego = new Juego();
-    
-            $form = $this->createForm(JuegoType::class, $juego,[
-                'method' => 'post',
-            ]);
-            $form->handleRequest($request);
-
-            if ($form->isSubmitted() && $form->isValid()) {
-                $juego = $form->getData();
-
-                $rutaimagen = $form->get('img')->getData();
-
-                if ($rutaimagen) {
-                    $originalFilename = pathinfo($rutaimagen->getClientOriginalName(), PATHINFO_FILENAME);
-                    // this is needed to safely include the file name as part of the URL
-                    $safeFilename = $slugger->slug($originalFilename);
-                    $newFilename = 'Imagenes/juego/'.$safeFilename.'-'.uniqid().'.'.$rutaimagen->guessExtension();
-
-                    
-                    try {
-                        $rutaimagen->move(
-                            $this->getParameter('img_directory_juego'),
-                            $newFilename
-                        );
-                    } catch (FileException $e) {
-                        // ... handle exception if something happens during file upload
-                    }
-
-                    $juego->setImg($newFilename);
-                }
-
-                $entityManager->persist($juego);
-                $entityManager->flush();
-
-                // $ProductoRepository= new ProductoRepository($doctrine);
-                // $ProductoRepository->save($producto);
-    
-                return $this->redirect($this->generateUrl('app_listado_juegos'));
-            }
-
-            return $this-> render('prueba/prueba.html.twig',[
-                'form' => $form,
-                'juego' => $juego,
-            ]);
-        }
     }

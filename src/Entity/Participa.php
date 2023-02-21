@@ -16,8 +16,7 @@ class Participa
     #[ORM\Column(length: 10)]
     private ?string $cod_invitacion = null;
 
-    #[ORM\Column]
-    private ?bool $presentado = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'participa')]
     #[ORM\JoinColumn(nullable: false)]
@@ -25,7 +24,11 @@ class Participa
 
     #[ORM\ManyToOne(inversedBy: 'participa')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $presentado = null;
+
 
     public function getId(): ?int
     {
@@ -44,18 +47,6 @@ class Participa
         return $this;
     }
 
-    public function isPresentado(): ?bool
-    {
-        return $this->presentado;
-    }
-
-    public function setPresentado(bool $presentado): self
-    {
-        $this->presentado = $presentado;
-
-        return $this;
-    }
-
     public function getEvento(): ?Evento
     {
         return $this->evento;
@@ -68,15 +59,28 @@ class Participa
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 
         return $this;
     }
+
+    public function isPresentado(): ?bool
+    {
+        return $this->presentado;
+    }
+
+    public function setPresentado(?bool $presentado): self
+    {
+        $this->presentado = $presentado;
+
+        return $this;
+    }
+
 }

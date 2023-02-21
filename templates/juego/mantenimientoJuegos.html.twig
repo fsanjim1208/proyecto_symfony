@@ -7,9 +7,10 @@
     {% block body %}
 
     <div id="juego" class=" mt-4">
+        <h3 class="text-primary mb-4 ms-5">Mantenimiento de Juegos</h3>
+<a href="{{path("app_crea_juego")}}"><button type="button" class="btn btn-primary mb-3 ms-btn__newJuego" id=""><i class="fa fa-plus"></i> Nuevo Juego</button> </a>
 
-        <h3 class="text-primary mb-4 ms-5">Listado de juegos</h3>
-        <table class=" table table-hover table-bordered table-condensed miTabla">
+        <table class=" table table-hover table-bordered table-condensed miTabla w-75">
             <thead class="thead-dark">
                 <tr>
                     <th>Nombre</th>
@@ -31,10 +32,16 @@
                         <td>{{ juego.Alto }}</td>
                         <td>{{ juego.getJugadoresMin() }}</td>
                         <td>{{ juego.getJugadoresMax() }}</td>
-                        <td><img src={{juego.img}} class="c-imagen c-imagen--juegos" ></img></td>
+
+                        {% if juego.img %}
+                            <td><img src="{{juego.img}}" class="c-imagen c-imagen--juegos" ></img></td>
+                        {% else %}
+                            <td>Sin imagen</td>
+                        {% endif %}
+                         
                         <td>
                             <a href="/editaJuegos/{{juego.id}}"><button type="button" class="btn btn-primary editar ps-3 pe-3 mb-3" id="{{juego.id}}"><i class="fa fa-edit"></i>  Editar</button></a> 
-                            <button type="button" class="btn btn-danger eliminar" id="{{juego.id}}"><i class="fa fa-trash"></i>  Eliminar</button> 
+                            <button type="button" class="btn btn-danger eliminar mb-3" id="{{juego.id}}"><i class="fa fa-trash"></i>  Eliminar</button> 
                             {# <a href="{{ path('app_home') }}"><i class="fa fa-edit" style="font-size:24px" data-toggle="modal" data-target="#Edit{{juego.id}}"></i></a>
                             <a href=""><i class="fa fa-trash" style="font-size:24px"  data-toggle="modal" data-target="#Delete{{juego.id}}"></i></a> #}
                         </td>

@@ -31,17 +31,19 @@ class Juego
     #[ORM\Column(length: 50)]
     private ?string $nombre = null;
 
-    #[ORM\Column(length: 150)]
-    private ?string $img = null;
-
     #[ORM\Column(length: 50)]
     private ?string $editorial = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $img = null;
 
     #[ORM\OneToMany(mappedBy: 'juego', targetEntity: Reserva::class)]
     private Collection $reserva;
 
     #[ORM\OneToMany(mappedBy: 'juego', targetEntity: Presentacion::class)]
     private Collection $presentacion;
+
+
 
     public function __construct()
     {
@@ -114,17 +116,6 @@ class Juego
         return $this;
     }
 
-    public function getImg(): ?string
-    {
-        return $this->img;
-    }
-
-    public function setImg(string $img): self
-    {
-        $this->img = $img;
-
-        return $this;
-    }
 
     public function getEditorial(): ?string
     {
@@ -207,6 +198,18 @@ class Juego
             ->setMaxResults($limit); // Limit
 
         return $paginator;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
+
+        return $this;
     }
 
 }

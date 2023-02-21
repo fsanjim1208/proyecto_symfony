@@ -16,11 +16,46 @@ use Knp\Component\Pager\PaginatorInterface;
 
         public function __construct(private ManagerRegistry $doctrine) {}
 
+        #[Route('/eo', name: 'eo')]
+        public function index(): Response
+        {
+            return $this->render('eo/eo.html.twig', [
+                'controller_name' => 'MainController',
+            ]);
+        }
 
         #[Route('/home', name: 'app_home')]
-        public function home(  Request $request):response
+        public function home(  Request $request,ManagerRegistry $doctrine):response
         {
-            return $this->render('main/home.html.twig');
+
+            $entityManager= $doctrine->getManager();
+            $juego1 = $this->doctrine
+            ->getRepository(Juego::class)
+            ->findOneById(6);
+
+            $entityManager= $doctrine->getManager();
+            $juego2 = $this->doctrine
+            ->getRepository(Juego::class)
+            ->findOneById(8);
+
+            $entityManager= $doctrine->getManager();
+            $juego3 = $this->doctrine
+            ->getRepository(Juego::class)
+            ->findOneById(3);
+
+            $entityManager= $doctrine->getManager();
+            $juego4 = $this->doctrine
+            ->getRepository(Juego::class)
+            ->findOneById(2);
+
+
+
+            return $this->render('main/home.html.twig',[
+                'juego1' => $juego1,
+                'juego2' => $juego2,
+                'juego3' => $juego3,
+                'juego4' => $juego4,
+            ]);
         }
 
 
@@ -58,33 +93,10 @@ use Knp\Component\Pager\PaginatorInterface;
         }
 
 
-        #[Route('/juegos')]
-        public function juegos( Request $request,PaginatorInterface $paginator):response
-        {
         
-            $juegos = $this->doctrine
-            ->getRepository(Juego::class)
-            ->findAll();
-
-            $juegos = $paginator->paginate($juegos, $request->query->getInt('page', 1),4);
-
-            return $this->render('juegos.html.twig',['juegos'=>$juegos]);
-        }
         
 
-        #[Route('/listadosJuegos' , name:"app_listado_juegos")]
-        public function mantejuegos(Request $request,ManagerRegistry $doctrine, PaginatorInterface $paginator)
-        {
-
-            $juegos = $this->doctrine
-            ->getRepository(Juego::class)
-            ->findAll();
-
-            $juegos = $paginator->paginate($juegos, $request->query->getInt('page', 1),4);
-
-
-            return $this->render('listados/listadosJuegos.html.twig',['juegos' => $juegos]);
-        }
+        
 
         // #[Route('/editaJuegos/{id}' , name:"app_edita_juegos")]
         // public function editajuegos($id)

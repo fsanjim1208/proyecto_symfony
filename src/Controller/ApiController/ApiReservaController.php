@@ -12,6 +12,7 @@ use App\Entity\Mesa;
 use App\Entity\Tramo;
 use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
+use Telegram\Bot\Api;
  
 
 #[Route('/api',name:"api_")]
@@ -35,6 +36,7 @@ class ApiReservaController extends AbstractController
             return $this->json("No hay reservas", 404);
         }
         
+
         foreach ($reservas as $reserva) {
             $arrayReservas[] = [
                 'id' => $reserva->getId(),
@@ -207,6 +209,7 @@ class ApiReservaController extends AbstractController
         return $this->json('reserva eliminada correctamente with id ' . $id);
     }
  
+
        
  
  

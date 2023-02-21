@@ -22,8 +22,7 @@ class Evento
     #[ORM\Column(length: 200)]
     private ?string $Descripcion = null;
 
-    #[ORM\Column(length: 150)]
-    private ?string $img = null;
+
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $fecha = null;
@@ -33,6 +32,9 @@ class Evento
 
     #[ORM\OneToMany(mappedBy: 'evento', targetEntity: Participa::class)]
     private Collection $participa;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $img = null;
 
     public function __construct()
     {
@@ -69,17 +71,7 @@ class Evento
         return $this;
     }
 
-    public function getImg(): ?string
-    {
-        return $this->img;
-    }
 
-    public function setImg(string $img): self
-    {
-        $this->img = $img;
-
-        return $this;
-    }
 
     public function getFecha(): ?\DateTimeInterface
     {
@@ -149,6 +141,18 @@ class Evento
                 $participa->setEvento(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImg(): ?string
+    {
+        return $this->img;
+    }
+
+    public function setImg(?string $img): self
+    {
+        $this->img = $img;
 
         return $this;
     }

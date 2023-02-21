@@ -22,7 +22,7 @@ class JuegoType extends AbstractType
             ->add('jugadores_min')
             ->add('jugadores_max')
             ->add('img', FileType::class, [ 
-                'label' => 'Imagen',
+                'label' => false,
                 'required' => false,
                 'data_class' => null,
                 'constraints' => [
@@ -36,7 +36,7 @@ class JuegoType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('save', SubmitType::class, ['label' => 'Editar Juego'])
+            ->add('save', SubmitType::class)
         ;
     }
 

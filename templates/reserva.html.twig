@@ -1,6 +1,10 @@
 
 {% extends "base2.html.twig" %}
-
+    {% block javascripts %}
+        <script src="{{ asset('JS/funcionesMesa.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/mesa.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/mio2.js') }}" type="text/javascript"></script>
+    {% endblock %}
     {% block body %}
     <div class="contenedor">
         <div class="sala"><p>Sala</p></div>

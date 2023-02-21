@@ -1,0 +1,51 @@
+
+{% extends 'base2.html.twig' %}
+
+
+{% block body %}
+    <div class="c-contentForm">
+        <h2 class="text-primary text-uppercase mt-5">Edita Evento</h2>
+        {{ form_start(form,{'attr' : {'class': 'centraFormulario'}}) }}
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="form-floating mb-4 col">
+                            {{ form_row(form.Nombre,{'attr' : {'class': 'form-control','id':'Nombre','placeholder':'Nombre'}}) }}
+                            
+                        </div>
+                        <div class="form-floating mb-4 col">
+                            {{ form_row(form.fecha,{'attr' : {'class': 'form-control', 'placeholder':'Fecha'},label:'Fecha'}) }}
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        {{ form_row(form.Descripcion,{'attr' : {'class': 'form-control','rows':"2",'placeholder':'Descripcion'},label:"Descripcion"}) }}
+                    </div>
+
+                    <label>Imagen</label>
+                    <div class="form-floating mb-4">
+                        
+                        <img src="../{{evento.img}}" class="c-imagen c-imagen--juegos mb-4"></img>
+
+                        {{ form_row(form.img,{'attr' : {'class': 'form-control'}}) }}
+                    </div>
+
+                    <a href="/invitaUsu/{{evento.id}}">Invitar usuarios</a> 
+
+                    <div class="row mt-3">
+                        <div class="form-floating mb-4 col">
+                            <a href="{{path('app_mantenimiento_evento')}}"><input class="btn btn-secondary w-100 py-3" value="Salir"></input></a>
+                        </div>
+                        <div class="form-floating mb-4 col">
+                            {{ form_row(form.save,{'attr' : {'class': 'btn btn-primary w-100 py-3'}})}}
+                        </div>
+
+                        {# <button type="submit" id="evento_save" name="evento[save]" class="btn btn-primary w-100 py-3 col">Editar Juego</button> #}
+                    </div>
+                    
+                </div>
+            </div>
+        {{ form_end(form) }}
+    </div>
+
+    {{dump()}}
+{% endblock %}

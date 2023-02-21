@@ -24,7 +24,7 @@
     top: 0; */
     overflow: auto;
     margin-top: 2%;
-    margin-left: 2%;
+    margin-left: 1%;
     height: 600px;
     min-width: 300px;
     width: 300px;
@@ -81,6 +81,18 @@ background: #e5e5e5;
 
 .c-imagen--juegos{
     width: 100px;
+    height: 100px;
+}
+
+.ms-btn__newEvento{
+    margin-left: 74em;
+}
+.ms-btn__newJuego{
+    margin-left: 1040px;
+}
+
+.c-imagen--eventos{
+    width: 150px;
     height: 100px;
 }
 
