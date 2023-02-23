@@ -72,7 +72,7 @@ class ApiMesaController extends AbstractController
     }
 
 
-    #[Route('/mesa/{id}',name:"mesa_show2", methods:"PUT")]
+    #[Route('/mesa/{id}',name:"mesa_update", methods:"PUT")]
     public function edit(Request $request, int $id): Response
     {
         $entityManager = $this->doctrine->getManager();
@@ -86,7 +86,6 @@ class ApiMesaController extends AbstractController
         $mesa->setAlto($request->request->get('alto'));
         $mesa->setX($request->request->get('x'));
         $mesa->setY($request->request->get('y'));
-        $mesa->setImagen($request->request->get('imagen'));
         
         $entityManager->persist($mesa);
         $entityManager->flush();

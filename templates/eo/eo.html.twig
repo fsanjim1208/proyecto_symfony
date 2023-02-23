@@ -2,34 +2,27 @@
 {% extends "base2.html.twig" %}
 
     {% block javascripts %}
-
-            
-        <script src="{{ asset('JS/mio2.js') }}" type="text/javascript"></script>
-        <script src="{{ asset('JS/mesas2.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/Mesa.js') }}" type="text/javascript"></script>   
+        <script src="{{ asset('JS/eo.js') }}" type="text/javascript"></script>   
+        {# // <script src="{{ asset('JS/mio2.js') }}" type="text/javascript"></script>
+        // <script src="{{ asset('JS/mesas2.js') }}" type="text/javascript"></script> #}
     {% endblock %}
 
     {% block body %}
 
     <div class="contenedor">
-        <div class="sala"><p>Sala</p></div>
+        <div class="sala"><p>Sala</p>
+                <div class="mesa" id="mesa_1" style="top:120px; left:500px"></div>
+                <div class="mesa" id="mesa_2" style="top:300px; left:500px"></div>
+                <div class="mesa" id="mesa_3" style="top:120px; left:100px"></div>
+                <div class="mesa" id="mesa_4" style="top:300px; left:100px"></div>
+                <div class="mesa" id="mesa_5" style="top:500px; left:100px"></div>
+        </div>
         <div class="almacen">
             <p>Almacen</p> 
             <button class="btn btn-primary w-50 py-1 centraBoton" type="submit" id="creaMesa">Crear Mesa Nueva</button>
-                {# <div class="mesa" id="mesa_1"></div>
-                <div class="mesa" id="mesa_2"></div>
-                <div class="mesa" id="mesa_3"></div>
-                <div class="mesa" id="mesa_4"></div>
-                <div class="mesa" id="mesa_5"></div> #}
+                <div class="mesa" id="mesa_6"></div>
+                <div class="mesa" id="mesa_7"></div>
         </div> 
-        
     </div>
-           
-        {# {{dump()}} #}
-        {# <h1>eee</h1>
-        <p>ladknvz</p>
-        <img src="{{ asset('Imagenes/mesa.png') }}"></img> #}
-
-
-
-
     {% endblock %}

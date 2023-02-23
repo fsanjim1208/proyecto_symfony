@@ -34,7 +34,13 @@
 .mesa{
     background-image: url("../Imagenes/mesa.png");
     border: 1px solid black;
+    width: 150px;
+    height: 150px;
     
+}
+
+.Reservas{
+    margin: 5%;
 }
 
 .almacen .mesa{

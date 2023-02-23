@@ -39,6 +39,26 @@ class ReservaRepository extends ServiceEntityRepository
         }
     }
 
+    public function findByFecha($fecha): ?array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.fecha_inicio = :fecha')
+            ->setParameter('fecha', $fecha)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function findByUser($id): ?array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.usuario = :id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 //    /**
 //     * @return Reserva[] Returns an array of Reserva objects
 //     */

@@ -1,0 +1,56 @@
+
+{% extends "base2.html.twig" %}
+    {% block javascripts %}
+        <script src="{{ asset('JS/modalEliminar.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/setPresentadoReserva.js') }}" type="text/javascript"></script>
+    {% endblock %}
+    {% block body %}
+
+    <div id="juego" class=" mt-4">
+        <h3 class="text-primary mb-4 ms-5">Mantenimiento de las Reservas</h3>
+       
+        <table class=" table table-hover table-bordered table-condensed miTabla w-75">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Id mesa</th>
+                    <th>Juego</th>
+                    <th>Usuario</th>
+                    <th>Presentado</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reserva in reservas %}
+                    <tr>
+                        <td>{{ reserva.fechaInicio }}</td>
+                        <td>{{ reserva.tramo.incio }}</td>
+                        <td>{{ reserva.mesa.id }}</td>
+                        <td>{{ reserva.juego.nombre }}</td>
+                        <td>{{ reserva.usuario.email }}</td>
+                        {% if reserva.presentado %}
+                            <td>
+                                <label class="me-2">Presentado</label><input type="checkbox" id="cbox`{{reserva.id}}" name="usus[]" value="{{reserva.id}}" checked>
+                            </td>
+                        {% else %}
+                            <td>
+                                <label class="me-2">Presentado</label><input type="checkbox" id="cbox`{{reserva.id}}" name="usus[]" value="{{reserva.id}}">
+                            </td>
+                        {% endif %}
+                        <td>
+                           <button type="button" class="btn btn-danger eliminar mb-3" id="{{reserva.id}}"><i class="fa fa-trash"></i>  Eliminar</button> 
+                            {# <a href="{{ path('app_home') }}"><i class="fa fa-edit" style="font-size:24px" data-toggle="modal" data-target="#Edit{{juego.id}}"></i></a>
+                            <a href=""><i class="fa fa-trash" style="font-size:24px"  data-toggle="modal" data-target="#Delete{{juego.id}}"></i></a> #}
+                        </td>
+                    </tr>
+                {% endfor %} 
+            </tbody>
+        </table>
+
+
+
+    </div>
+
+    {{dump()}}
+    {% endblock %}

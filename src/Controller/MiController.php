@@ -78,19 +78,7 @@ use Knp\Component\Pager\PaginatorInterface;
         }
 
         
-        #[Route('/reserva', name:"reserva")]
-        public function reserva( Request $request):response
-        {
-            $tramos = $this->doctrine
-            ->getRepository(Tramo::class)
-            ->findAll();
 
-            $juegos = $this->doctrine
-            ->getRepository(Juego::class)
-            ->findAll();
-
-            return $this->render('reserva.html.twig',['tramos'=>$tramos ,'juegos'=>$juegos]);
-        }
 
 
         

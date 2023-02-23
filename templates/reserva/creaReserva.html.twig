@@ -1,17 +1,22 @@
 
 {% extends "base2.html.twig" %}
     {% block javascripts %}
-        <script src="{{ asset('JS/funcionesMesa.js') }}" type="text/javascript"></script>
+        <!-- <script src="{{ asset('JS/funcionesMesa.js') }}" type="text/javascript"></script>
         <script src="{{ asset('JS/mesa.js') }}" type="text/javascript"></script>
         <script src="{{ asset('JS/mio2.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/reserva.js') }}" type="text/javascript"></script> -->
+        
+        <script src="{{ asset('JS/mio2.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/mesa.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/reserva2.js') }}" type="text/javascript"></script>
     {% endblock %}
     {% block body %}
     <div class="contenedor">
         <div class="sala"><p>Sala</p></div>
 
         <div class="c-contentForm formreserva">
-            <h2 class="text-primary text-uppercase mt-5">Reservar</h2>
-            <form class="ms-5" action="/home" id="form_reserva">
+            <h2 class="text-primary text-uppercase mt-2">Reservar</h2>
+            <form class="ms-5" action="{{ path('app_listado_reservas') }}" id="form_reserva">
                 <div class="row g-6">
                     <div class="col-md-13">
                         <label id="errorFecha" class="text-danger mt-2 mb-2"></label>

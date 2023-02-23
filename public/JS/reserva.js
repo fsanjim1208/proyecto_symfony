@@ -15,7 +15,7 @@ $(function(){
     var errorJugadores=$("#errorJugadores");
     var errorJuego=$("#errorJuegos");
     var errorMesa=$("#errorMesa");
-            var mesasdia=[];
+    var mesasdia=[];
     inputMesa.prop('disabled', true);
     tramo.prop('disabled', true);
     jugadores.prop('disabled', true);
@@ -75,6 +75,15 @@ $(function(){
         yearSuffix: '',
         onSelect: function(text, obj){
             tramo.prop('disabled', false)
+            tramo.change(function(ev){
+                ev.preventDefault();
+                var mesasSala=$('.sala .mesa');
+                for (let i = 0; i < mesasSala.length; i++) {
+                    console.log(mesasSala[i]);
+                    
+                }
+                alert("woo");
+            })
             jugadores.prop('disabled', false)
             var dia= text.split("/")[0];
             var mes= text.split("/")[1];
@@ -110,15 +119,32 @@ $(function(){
             }
              
             pintaMesas(mesasdia);  
-            console.log($(".mesa"))
             $(".mesa").click(function(){
-                for (let i = 0; i < reservas.length; i++) {
-                    if(reservas[i].idMesa==this.id.split("_")[1] ){
-                        
-                        console.log("esta mesa esta reservada");
+                var inicio= formu[0].tramo.value.split(" ")[0];
+                if (inicio != "Seleccione"){
+                    var tramo="";
+
+                    $.ajax( "http://localhost:8000/api/tramo/"+inicio,  
+                    {
+                        method:"GET",
+                        dataType:"json",
+                        crossDomain: true,
+                        async: false
                     }
-                    else{
-                        formu[0].idMesa.value=this.id;
+                    ).done(function(data){
+                        tramo=data;
+                    });
+                    console.log(tramo);
+                
+                    for (let i = 0; i < reservas.length; i++) {
+                        if((reservas[i].idMesa==this.id.split("_")[1]) &&
+                           (reservas[i].idtTramo==tramo.id) ){
+                            
+                            console.log("esta mesa esta reservada");
+                        }
+                        else{
+                            formu[0].idMesa.value=this.id;
+                        }
                     }
                 }
             }) 
@@ -233,6 +259,7 @@ $(function(){
                 modal: true,
                 buttons: {
                     "Reservar mesa": function() {
+                        
                         $.ajax( "http://localhost:8000/api/reserva",  
                         {
                             method:"POST",

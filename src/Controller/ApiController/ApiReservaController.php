@@ -45,6 +45,37 @@ class ApiReservaController extends AbstractController
                 'idJuego' => $reserva->getJuego()->getId(),
                 'idMesa' => $reserva->getMesa()->getId(),
                 'idUser' => $reserva->getUsuario()->getId(),
+                'presentado' => $reserva->isPresentado(),  
+                
+            ];
+        }
+        
+        return $this->json($arrayReservas);
+    }
+
+    #[Route('/reserva2',name:"all_reserva_thisUser", methods:"GET")]
+    public function all_reserva_thisUser(): Response
+    {
+        $reservas = $this->doctrine
+                        ->getRepository(Reserva::class)
+                        ->findByUser($this->getUser()->getId());
+ 
+        $arrayReservas = [];
+
+        if(!$reservas){
+            return $this->json("No hay reservas", 404);
+        }
+        
+
+        foreach ($reservas as $reserva) {
+            $arrayReservas[] = [
+                'id' => $reserva->getId(),
+                'fecha' => $reserva->getFechaInicio(),
+                'idTramo' => $reserva->getTramo()->getId(),
+                'idJuego' => $reserva->getJuego()->getId(),
+                'idMesa' => $reserva->getMesa()->getId(),
+                'idUser' => $reserva->getUsuario()->getId(),
+                'presentado' => $reserva->isPresentado(),  
                 
             ];
         }
@@ -75,11 +106,42 @@ class ApiReservaController extends AbstractController
                 'idJuego' => $reservas->getJuego()->getId(),
                 'idMesa' => $reservas->getMesa()->getId(),
                 'idUser' => $reservas->getUsuario()->getId(),
+                'presentado' => $reserva->isPresentado(),  
                 
         ];
         
         
         return $this->json($reserva);
+    }
+
+    #[Route('/reserva2/{fecha}',name:"reserva_show", methods:"GET")]
+    public function show_reserva3( string $fecha): Response
+    {
+        $reservas = $this->doctrine
+                        ->getRepository(Reserva::class)
+                        ->findByFecha($fecha);
+ 
+
+        if(!$reservas){
+            return $this->json("No hay reservas", 404);
+        }
+        
+        $reservasArray=[];
+
+        foreach ($reservas as $reserva) {
+            $reservasArray[] = [
+                'id' => $reserva->getId(),
+                'fecha' => $reserva->getFechaInicio(),
+                'idTramo' => $reserva->getTramo()->getId(),
+                'idJuego' => $reserva->getJuego()->getId(),
+                'idMesa' => $reserva->getMesa()->getId(),
+                'idUser' => $reserva->getUsuario()->getId(),
+                'presentado' => $reserva->isPresentado(),                
+            ];
+        }
+        
+        
+        return $this->json($reservasArray);
     }
 
     // #[Route('/festivo/{id}',name:"festivo_update", methods:"PUT")]
@@ -123,7 +185,7 @@ class ApiReservaController extends AbstractController
 
         $tramo = $this->doctrine
         ->getRepository(Tramo::class)
-        ->findOneByIncio(explode("-",$request->request->get('tramo'))[0]);
+        ->findOneByIncio(explode(" ",$request->request->get('tramo'))[0]);
         // ->findOneByIncio(explode("-","08:00:00 - 09:00:00")[0]);
         // dd($tramo);
         $mesa = $this->doctrine
@@ -139,7 +201,7 @@ class ApiReservaController extends AbstractController
         // $mes=explode("/","12/12/12")[1];
         // $anio=explode("/","12/12/12")[2];
 
-        $fecha= $anio."-".$mes."-".$dia;
+        $fecha= $dia."-".$mes."-".$anio;
 
         
 
@@ -149,10 +211,11 @@ class ApiReservaController extends AbstractController
         $reserva->setJuego($juego);
         $reserva->setMesa($mesa);
         $reserva->setUsuario($this->getUser());
-
+        $reserva->setPresentado(false);
 
         $entityManager->persist($reserva);
         $entityManager->flush();
+
         // dd($reserva);
         return $this->json('Creada la reserva con id ' . $reserva->getId());
     }

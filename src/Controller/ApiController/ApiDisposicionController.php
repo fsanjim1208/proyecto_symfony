@@ -22,28 +22,21 @@ class ApiDisposicionController extends AbstractController
 
 
 
-    #[Route('/disposicion2/{id}/{fecha}',name:"disposicion_index", methods:"PUT")]
-    public function index(Request $request,$id, $fecha): Response
+    #[Route('/disposicion2/{idMesa}/{fecha}',name:"disposicion34_update", methods:"PUT")]
+    public function updateDisposicion34(Request $request,$idMesa, $fecha): Response
     {
 
         $entityManager = $this->doctrine->getManager();
         
-        // $disposicion = $this->doctrine
-        //                 ->getRepository(Disposicion::class)
-        //                 ->findByFechaAndIdMesa("18-02-2023",5);
-        // dd($disposiciones);
-
-        //dd($id);
-
         $disposicion = $this->doctrine
                         ->getRepository(Disposicion::class)
-                        ->findByFechaAndIdMesa($fecha, $id);
+                        ->findByFechaAndIdMesa($fecha, $idMesa);
                         // ->findByFechaAndIdMesa("18-02-2023",5);
         // dd($disposicion);
         $disposicionesArray = [];
 
         if(!$disposicion){
-            return $this->json("No hay disposiciones", 404);
+            return $this->json("No hay disposiciones");
         }
 
         $disposicion->setX($request->request->get('X'));
@@ -53,7 +46,7 @@ class ApiDisposicionController extends AbstractController
         $entityManager->flush();
 
     
-        $arrayReservas[] = [
+        $disposicionesArray[] = [
             'id' => $disposicion->getId(),
             'fecha' => $disposicion->getFecha(),
             'idMesa' => $disposicion->getMesa()->getId(),
@@ -61,17 +54,25 @@ class ApiDisposicionController extends AbstractController
             'Y' => $disposicion->getY(),
             
         ];
-        
-        
-        return $this->json($arrayReservas);
+        return $this->json($disposicionesArray);
     }
 
-    #[Route('/disposicion/{fecha}',name:"disposicion_show", methods:"GET")]
-    public function show_reserva(String $fecha): Response
+
+
+
+
+
+
+
+
+
+
+    #[Route('/disposicion/{fecha}/{idMesa}',name:"disposicion_show_ByFecha_IdMesa", methods:"GET")]
+    public function show_disposicion_fecha_mesa($idMesa,  $fecha): Response
     {
         $disposiciones = $this->doctrine
                         ->getRepository(Disposicion::class)
-                        ->findByFecha($fecha);
+                        ->findByFechaAndIdMesa($fecha, $idMesa);
  
         
 
@@ -94,6 +95,34 @@ class ApiDisposicionController extends AbstractController
         }
         
         
+        return $this->json($disposicionesArray);
+    }
+
+    #[Route('/disposicion/{fecha}',name:"disposicion_show_byFecha", methods:"GET")]
+    public function show_disposicion_ByFecha($fecha): Response
+    {
+        $disposiciones = $this->doctrine
+                        ->getRepository(Disposicion::class)
+                        ->findByFecha($fecha);
+ 
+        
+
+        if(!$disposiciones){
+            return $this->json("No hay disposiciones", 404);
+        }
+        
+        $disposicionesArray=[];
+
+        foreach ($disposiciones as $disposicion) {
+            $disposicionesArray[] = [
+                'id' => $disposicion->getId(),
+                'fecha' => $disposicion->getFecha(),
+                'idMesa' => $disposicion->getMesa()->getId(),
+                'X' => $disposicion->getX(),
+                'Y' => $disposicion->getY(),
+                
+            ];
+        }
         return $this->json($disposicionesArray);
     }
 
@@ -123,8 +152,6 @@ class ApiDisposicionController extends AbstractController
                 
             ];
         }
-        
-        
         return $this->json($disposicionesArray);
     }
 
@@ -242,8 +269,25 @@ class ApiDisposicionController extends AbstractController
         return $this->json('disposicion eliminada correctamente with id ' . $id);
     }
  
-       
- 
- 
- 
+    #[Route('/disposicion/{idMesa}/{fecha}',name:"disposicion_update", methods:"DELETE")]
+    public function Delete_Disposicion_ByFecha_IdMesa(Request $request,$idMesa, $fecha): Response
+    {
+
+        
+        
+        $disposicion = $this->doctrine
+                        ->getRepository(Disposicion::class)
+                        ->findByFechaAndIdMesa($fecha, $idMesa);
+                        // ->findByFechaAndIdMesa("18-02-2023",5);
+
+        if (!$disposicion) {
+            return $this->json('No project found for id' . $id, 404);
+        }
+    
+        $entityManager->remove($disposicion);
+        $entityManager->flush();
+    
+        return $this->json('disposicion eliminada correctamente with id ' . $id);
+        
+    }
 }

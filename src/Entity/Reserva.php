@@ -19,9 +19,6 @@ class Reserva
     #[ORM\Column(length: 50)]
     private ?String $fecha_inicio = null;
 
-    #[ORM\Column(length: 50)]
-    private ?String $fecha_anulacion = null;
-
     #[ORM\Column]
     private ?bool $presentado = null;
 
@@ -41,6 +38,9 @@ class Reserva
     #[ORM\JoinColumn(nullable: false)]
     private ?User $usuario = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $fecha_anulacion = null;
+
 
     public function getId(): ?int
     {
@@ -59,17 +59,6 @@ class Reserva
         return $this;
     }
 
-    public function getFechaAnulacion(): ?String
-    {
-        return $this->fecha_anulacion;
-    }
-
-    public function setFechaAnulacion(?String $fecha_anulacion): self
-    {
-        $this->fecha_anulacion = $fecha_anulacion;
-
-        return $this;
-    }
 
     public function isPresentado(): ?bool
     {
@@ -127,6 +116,18 @@ class Reserva
     public function setUsuario(?User $usuario): self
     {
         $this->usuario = $usuario;
+
+        return $this;
+    }
+
+    public function getFechaAnulacion(): ?string
+    {
+        return $this->fecha_anulacion;
+    }
+
+    public function setFechaAnulacion(?string $fecha_anulacion): self
+    {
+        $this->fecha_anulacion = $fecha_anulacion;
 
         return $this;
     }

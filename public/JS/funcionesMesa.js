@@ -1,5 +1,5 @@
 function disposicionToMesa(disposicionBase){
-    var mesasBase=[];
+    var mesas=[];
     for (let i = 0; i < disposicionBase.length; i++) {
         
         $.ajax( "http://localhost:8000/api/mesa/"+disposicionBase[i].idMesa,  
@@ -13,12 +13,13 @@ function disposicionToMesa(disposicionBase){
             $.each( data, function( key, val ) {
                 val.x=disposicionBase[i].X;
                 val.y=disposicionBase[i].Y
-                var mesaa=new Mesa(val)
-                mesasBase.push(mesaa);
+                var mesa=new Mesa(val)
+                mesas.push(mesa);
             });
         })
     }
-    return mesasBase;
+    console.log(mesas)
+    return mesas;
 }
 
 function jsonToDate(json){
@@ -80,11 +81,39 @@ function pintaMesasAlmacen(mesas) {
     })
 }
 
+function pintaMesasAlmacenDraggables(mesas) {
+    var almacen = $(".almacen");
+    var mesasAlmacen=$(".almacen .mesa")
+    mesasAlmacen.remove();
+    var arrayMesas = mesas;
+    $.each(arrayMesas, function (key, val) {
+        if (val.y === 0 && val.x === 0) {
+            var mesa = $("<div>");
+            mesa.attr("id", "mesa_" + val.id);
+            mesa.attr("class", "mesa");
+            mesa.css('width', val.ancho);
+            mesa.css('height', val.alto);
+            almacen.append(mesa);
+        }
+    });
+    $(".almacen .mesa").draggable({
+        revert: true,
+        helper: 'clone',
+        revertDuration: 0,
+        start: function(ev,ui){
+            ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
+        }
+    })
+}
+
 function MesasAlmacenDraggable(){
     $(".almacen .mesa").draggable({
         revert: true,
-        helper: "clone", 
-        revertDuration:0,
+        helper: 'clone',
+        revertDuration: 0,
+        start: function(ev,ui){
+            ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
+        }
     })
 }
 function pintaMesas(mesas) {
@@ -120,65 +149,62 @@ function pintaMesas(mesas) {
         }
     })
 }
+function pintaMesasDraggables(mesas) {
+    var almacen = $(".almacen");
+    var sala = $(".sala");
+    var arrayMesas = mesas;
+
+    var mesasAlmacen=$(".almacen .mesa")
+    mesasAlmacen.remove();
+    var mesasSala=$(".sala .mesa")
+    mesasSala.remove();
+
+
+    $.each(arrayMesas, function (key, val) {
+        if (val.y === 0 && val.x === 0) {
+            var mesa = $("<div>");
+            mesa.attr("id", "mesa_" + val.id);
+            mesa.attr("class", "mesa");
+            mesa.css('width', val.ancho);
+            mesa.css('height', val.alto);
+            almacen.append(mesa);
+        }
+        //si las coordenadas son distintas de 0 las meto dentro de la sala
+        else {
+            var mesa = $("<div>");
+            mesa.attr("id", "mesa_" + val.id);
+            mesa.attr("class", "mesa");
+            mesa.css('width', val.ancho);
+            mesa.css('height', val.alto);
+            mesa.css('top', val.x);
+            mesa.css('left', val.y);
+            sala.append(mesa);
+        }
+
+        $(".sala .mesa").draggable({  
+            // revert: true,
+            // accept: ".sala, .almacen",
+            // helper: "clone",              
+            revert: true,
+            helper: 'clone',
+            revertDuration: 0,
+            start: function(ev,ui){
+                ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
+            }
+        });
+    })
+}
 
 function mesaSalaDraggable(){
     $(".sala .mesa").draggable({  
         // revert: true,
         // accept: ".sala, .almacen",
         // helper: "clone",              
-        stop: function(ev, ui){
-            // console.log(parseInt(this.style.top));
-            //console.log("eoo "+ui.helper.prevObject);
-            var mesa = new Mesa({
-                "id": this.id.split("_")[1],
-                "x" : parseInt(this.style.top), 
-                "y" : parseInt(this.style.left), 
-                "ancho":parseInt(this.style.width),
-                "alto":parseInt(this.style.height)
-            });
-            // console.log(mesa);
-            
-            //mesa.solapa();
-            $(this).append(mesa);
-            console.log(mesa)
-            $.ajax( "http://localhost:8000/api/mesa/"+this.id.split("_")[1],  
-            {
-                method:"PUT",
-                dataType:"json",
-                crossDomain: true,
-                data: {
-                    "x" : parseInt(this.style.top), 
-                    "y" : parseInt(this.style.left), 
-                    "ancho":parseInt(this.style.width),
-                    "alto":parseInt(this.style.height)
-                },
-            })
-
-            // if(mesa.solapa()){
-                
-            // }
-            // else{
-
-            //     // console.log(mesa);
-            //     // console.log(this)
-            //     // mesa.css({
-            //     //     "top":ui.offset.top,
-            //     //     "left":ui.offset.left});
-                
-            //     $(this).append(mesa);
-            //     $.ajax( "http://localhost:8000/api/mesa/"+this.id.split("_")[1],  
-            //     {
-            //         method:"PUT",
-            //         dataType:"json",
-            //         crossDomain: true,
-            //         data: {
-            //             "x" : parseInt(this.style.top), 
-            //             "y" : parseInt(this.style.left), 
-            //             "ancho":parseInt(this.style.width),
-            //             "alto":parseInt(this.style.height)
-            //         },
-            //     })
-            // s}
+        revert: true,
+        helper: 'clone',
+        revertDuration: 0,
+        start: function(ev,ui){
+            ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
         },
     });
 }

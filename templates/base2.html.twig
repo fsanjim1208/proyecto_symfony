@@ -34,9 +34,9 @@
             <script src="{{ asset('JS/jquery-ui.js') }}" type="text/javascript"></script>
             {# // <script src="{{ asset('JS/mio.js') }}" type="text/javascript"></script>
             // <script src="{{ asset('JS/mesa.js') }}" type="text/javascript"></script> #}
-            <script src="{{ asset('JS/crearMesas.js') }}" type="text/javascript"></script>
+            {# <script src="{{ asset('JS/crearMesas.js') }}" type="text/javascript"></script> #}
             {# <script src="{{ asset('JS/validaformulario.js') }}" type="text/javascript"></script> #}
-            <script src="{{ asset('JS/reserva.js') }}" type="text/javascript"></script>
+            
             <script src="{{ asset('Bootstrap/solartec-1.0.0/lib/wow/wow.min.js') }}" type="text/javascript"></script>
             {% block javascripts %}
 
@@ -97,7 +97,7 @@
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">RESERVAS</a>
                         <div class="dropdown-menu fade-down m-0">
-                            <a href="#" class="dropdown-item">Ver mis reservas</a>
+                            <a href="{{ path('app_listado_reservas')}}" class="dropdown-item">Ver mis reservas</a>
                             <a href="{{ path('reserva') }}" class="dropdown-item">Hacer una reserva</a>
                         </div>
                     </div>
@@ -122,6 +122,7 @@
                                 <a href="{{ path('app_mantenimiento_juegos') }}" class="dropdown-item">JUEGOS</a>
                                 <a href="{{ path('app_mantenimiento_evento') }}" class="dropdown-item">EVENTOS</a>
                                 <a href="{{ path('app_disposicion') }}" class="dropdown-item">DISPOSICION</a>
+                                <a href="{{ path('app_mantenimientoReserva') }}" class="dropdown-item">RESERVSAS</a>
                             </div>
                         </div>
                     {% endif %}
