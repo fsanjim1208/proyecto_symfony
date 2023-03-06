@@ -1,5 +1,5 @@
 $(function(){
-    console.log("ww");
+    
 
     // //MESA DRAGABLE
     // $(".mesa").draggable({
@@ -12,6 +12,8 @@ $(function(){
     //     revertDuration: 0,
     // });
 
+
+    //hacemos la sala dropable
     $(".sala").droppable({
         accept: ".mesa",
         drop: function( event,ui){
@@ -38,7 +40,7 @@ $(function(){
                     i++;
                 }
             }
-
+            //si no choca añadimos la mesa
             if(!choca){
                 this.append(mesaArrastrada.prevObject[0])
                 mesaArrastrada.prevObject[0].style.top= mesa.x+"px";

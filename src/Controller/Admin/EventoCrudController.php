@@ -33,7 +33,7 @@ class EventoCrudController extends AbstractCrudController
             return[
                 'nombre',
                 'descripcion',
-                // ChoiceField::new('usuarios')->setChoices($user)->allowMultipleChoices(),
+                //Field::new('usuarios')->setChoices($user)->allowMultipleChoices(),
             ];
         }
         return [

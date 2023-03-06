@@ -2,31 +2,10 @@ $(function(){
 
     var boton= $("#creaMesa");
     boton.click(function(ev) {
-        // ev.preventDefault();
-        // var modal=  $("<div>");
-        // var formulario = $("<form>");
-
-        // var inputX = $("<input>");
-        // console.log(inputX.get(0).type);
-        // inputX.get(0).name = 'X';
-        // inputX.get(0).value = 'coordenadas X';
-        
-        // var inputY = $("<input>");
-        // // inputY.get(0).type = 'number';
-        // inputY.get(0).name = 'Y';
-        // inputY.get(0).value = 'coordenadas Y';
-        
-        // inputX.appendTo(formulario);
-        // inputY.appendTo(formulario);
-        // formulario.appendTo(modal);
-        // modal.dialog({
-        //     height: 200,
-        //     width: 500,
-        //     title:"EE",
-        // }).appendTo($("#contenedor"));
 
 
 
+        //creamos la plantilla donde aparece el formulario
         var plantilla=`
         <div class="c-contentForm">
             <form class="c-form c-form--mesas">
@@ -41,23 +20,71 @@ $(function(){
                             <input type="number" class="form-control" id="anchura" name="anchura" placeholder="Ancho">
                             <label for="anchura">Ancho</label>
                         </div>
-                        <br>
-                        <button class="btn btn-primary w-100 py-3" type="submit" id="crear" name="submit">Crear Mesa</button>
                     </div>
                 </div>
             </form>
         </div>`
 
         jqPlantilla=$(plantilla);
-
+        //creamos el modal del formulario
         jqPlantilla.dialog({
             title: "Crear una mesa nueva",
-            height: 400,
-            width: 600,
+            height: 300,
+            width: 400,
             modal: true,
             buttons: {
+                "Crear": function() {
+                    var formu = $(".c-form--mesas");
+                    const numError = [];
+                    console.log(formu[0].altura)
+                    if(formu[0].altura.value === null || formu[0].altura.value==="" || formu[0].altura.value<15){
+                        formu[0].altura.style.border="1px solid red";
+                        numError.push(2);
+                    }else{         
+                        formu[0].altura.style.border="1px solid green";
+                    }
+                    //si el campo anchura no es valido
+                    if(formu[0].anchura.value === null || formu[0].anchura.value==="" || formu[0].anchura.value<15){
+                        formu[0].anchura.style.border="1px solid red";
+                        numError.push(3);
+        
+                    }else{
+                        formu[0].anchura.style.border="1px solid green";
+                    }
+                            
+                    //si el campo del numero de errores es mayor que 0 es porque hay algun error
+                    //por lo cual hacemos un preventDefault para que no se envie el formulario
+                    if(numError.length>0){
+                        ev.preventDefault();
+                    }
+                    else{
+                        ev.preventDefault();
+                        $.ajax( "http://localhost:8000/api/mesa",  
+                        {
+                            method:"POST",
+                            dataType:"json",
+                            crossDomain: true,
+                            data: {
+                                "x" : 0, 
+                                "y" : 0, 
+                                "ancho": formu[0].anchura.value,
+                                "alto": formu[0].altura.value
+                            },
+                        }).done(function(data){
+                            var id=data[0].split(" ")[6]
+                            var almacen=$(".almacen")
+                            almacen.append("<div id='mesa_"+id+"' class='mesa ui-draggable ui-draggable-handle' style='width: "+data[2][0].alto+"px; height: "+data[2][0].ancho+"px;'></div>")
+                        })
+
+
+                        // var disposicion=cogeDisposiciones()
+                        // pintaMesasAlmacenDraggables(mesas)
+                        // pintaMesas();
+                        jqPlantilla.dialog( "close" );
+                    }
+                },
                 Cancel: function() {
-                jqPlantilla.dialog( "close" );
+                    jqPlantilla.dialog( "close" );
                 }
             },
             close: function() {
@@ -65,21 +92,95 @@ $(function(){
             },
         })
 
-        // var boton2=$("#crear");
-        // console.log(boton2);
-        // boton2.click(function(ev){
-        //     ev.preventDefault();
-        //     var formu = $("form");
-        //     var alto=formu[0].altura.value;
-        //     var ancho=formu[0].anchura.value
 
-            
-        // })
-        var formu = $("form");
-        validar(formu);
     });
 
+    function cogeMesas() {
+        var mesasArray = [];
+        $.ajax("http://localhost:8000/api/mesa",
+            {
+                method: "GET",
+                dataType: "json",
+                crossDomain: true,
+                async: false,
+    
+            }).done(function (data) {
+    
+                $.each(data, function (key, val) {
+                    var mesaOrigen = new Mesa(val);
+                    mesasArray.push(mesaOrigen);
+    
+                })
+    
+            });
+        return mesasArray;
+    }
+    function cogeDisposiciones() {
+        var disposicion=[];
+        $.ajax( "http://localhost:8000/api/disposicion",  
+        {
+            method:"GET",
+            dataType:"json",
+            crossDomain: true,
+            async: false
+        }
+        ).done(function(data){
+            $.each( data, function( key, val ) {
+                disposicion.push(val);
+            });
+        })
+        return disposicion;
+    }
 
+        
+    function disposicionToMesa(disposicionBase){
+        var mesas=[];
+        for (let i = 0; i < disposicionBase.length; i++) {
+            
+            $.ajax( "http://localhost:8000/api/mesa/"+disposicionBase[i].idMesa,  
+            {
+                method:"GET",
+                dataType:"json",
+                crossDomain: true,
+                async: false
+            }
+            ).done(function(data){
+                $.each( data, function( key, val ) {
+                    val.x=disposicionBase[i].X;
+                    val.y=disposicionBase[i].Y
+                    var mesa=new Mesa(val)
+                    mesas.push(mesa);
+                });
+            })
+        }
+        return mesas;
+    }
+
+
+    function pintaMesasAlmacenDraggables(mesas) {
+        var almacen = $(".almacen");
+        var mesasAlmacen=$(".almacen .mesa")
+        mesasAlmacen.remove();
+        var arrayMesas = mesas;
+        $.each(arrayMesas, function (key, val) {
+            if (val.y === 0 && val.x === 0) {
+                var mesa = $("<div>");
+                mesa.attr("id", "mesa_" + val.id);
+                mesa.attr("class", "mesa");
+                mesa.css('width', val.ancho);
+                mesa.css('height', val.alto);
+                almacen.append(mesa);
+            }
+        });
+        $(".almacen .mesa").draggable({
+            revert: true,
+            helper: 'clone',
+            revertDuration: 0,
+            start: function(ev,ui){
+                ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
+            }
+        })
+    }
     function validar(formu, ev){
 
         // form.click(function(ev){

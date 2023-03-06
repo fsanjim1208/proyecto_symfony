@@ -46,7 +46,7 @@ class ApiReservaController extends AbstractController
                 'idMesa' => $reserva->getMesa()->getId(),
                 'idUser' => $reserva->getUsuario()->getId(),
                 'presentado' => $reserva->isPresentado(),  
-                
+                'fecha_anulacion'=>$reserva->getFechaAnulacion(),   
             ];
         }
         return $this->json($arrayReservas);

@@ -115,11 +115,19 @@ class ApiMesaController extends AbstractController
         $mesa->setX($request->request->get('x'));
         $mesa->setY($request->request->get('y'));
         $mesa->setImagen($request->request->get('imagen'));
- 
+
+        $arrayMesas[] = [
+            'ancho' => $mesa->getAncho(),
+            'alto' => $mesa->getAlto(),
+            'x' => $mesa->getX(),
+            'y' => $mesa->getY(),
+            'imagen' => $mesa->getImagen(),
+        ];
+
         $entityManager->persist($mesa);
         $entityManager->flush();
  
-        return $this->json(['Creada la nueva mesa con id ' . $mesa->getId(), 'codigo: 201'], 201);
+        return $this->json(['Creada la nueva mesa con id ' . $mesa->getId(), 'codigo: 201',$arrayMesas], 201);
     }
 
     #[Route('/mesa/{id}',name:"mesa_delete", methods:"DELETE")]
@@ -131,11 +139,19 @@ class ApiMesaController extends AbstractController
         if (!$mesa) {
             return $this->json(['No hay mesas por esa id: ' . $id, 'codigo: 404 '], 404);
         }
+        $arrayMesas[] = [
+            'id' => $mesa->getId(),
+            'ancho' => $mesa->getAncho(),
+            'alto' => $mesa->getAlto(),
+            'x' => $mesa->getX(),
+            'y' => $mesa->getY(),
+            'imagen' => $mesa->getImagen(),
+        ];
  
         $entityManager->remove($mesa);
         $entityManager->flush();
  
-        return $this->json(['Borrada correctamente la mesa con id ' . $id,'codigo: 200']);
+        return $this->json(['Borrada correctamente la mesa con id ' . $id,'codigo: 200',$arrayMesas]);
     }
  
        

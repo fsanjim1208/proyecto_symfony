@@ -1,7 +1,11 @@
 $(function(){
+    //cojo todos los festivos
     var festivos=cogeFestivos();
+    //cojo todas las reservas
     var reservas=cogeReservas();
+    //cojo todas las mesas
     var mesas= cogeMesas();
+    //cojo todos los juegos
     var allJuegos= cogeJuegos();
     // var disposiciones= cogeDisposiciones();
     var formu=$("#form_reserva")
@@ -17,6 +21,8 @@ $(function(){
     var errorJuego=$("#errorJuegos");
     var errorMesa=$("#errorMesa");
     var mesasdia=[];
+
+    //desabilito todos los input menos el de la fecha
     inputMesa.prop('disabled', true);
     inputMesa[0].style.backgroundColor="e9ecef";
     tramo.prop('disabled', true);
@@ -26,7 +32,7 @@ $(function(){
     juegos.prop('disabled', true);
     juegos[0].style.backgroundColor="e9ecef";
 
-
+    //funcion que desabilita los dias festivos en el calendario
     function deshabilitaFechas(date) {
         var string = jQuery.datepicker.formatDate('dd/mm/yy', date);
         return [festivos.indexOf(string) == -1];
@@ -53,19 +59,24 @@ $(function(){
         isRTL: false,
         showMonthAfterYear: false,
         yearSuffix: '',
+        //cuando selecciono la fecha
         onSelect: function(text, obj){
+
             var dia= text.split("/")[0];
             var mes= text.split("/")[1];
             var anio= text.split("/")[2];
             var fechaDisposicion= dia+"-"+mes+"-"+anio;
             disposicionesDia=[];
+            //cogemos la disposicion de esa fecha selecionada
             var disposicion= cogeDisposicion(fechaDisposicion);
+            
             if(disposicion.length>0){
                 for (let i = 0; i < disposicion.length; i++) {
                     disposicionesDia.push(disposicion[i]);
                 }
             }
             
+            //si hay disposicion pintamos la mesa y si no pintamos la disposicion base
             if(disposicionesDia.length>0){
                 mesasdia = disposicionToMesa(disposicionesDia);
                 pintaMesas(mesasdia);
@@ -73,27 +84,34 @@ $(function(){
             else{
                 pintaDisposicionBaseNoDraggable(mesas);
             }
-
+            //habilitamos el tramo
             tramo.prop('disabled', false)
             tramo[0].style.backgroundColor="white";
-            
+
+            //cuando el tramo cambia cogemos las reservas
+            //y las mesas para comparar y modificar las que estan reservadas
             tramo.change(function(ev){
                 var mesas= $(".sala .mesa");
                 var inicio=this.value.split(" ")[0];
-
+                //cogenmos el tramo para obtener el id de ese tramo
                 var tramo=cogeTramoBYInicio(inicio);
 
+                //pintamos todas las mesas como estaban de inicio,por
+                //si alguna estaba reservada y hemos cambiado el tramo y
+                //ahora no lo esta
                 $.each(mesas, function(index, mesaSala) {
                     mesaSala.style.opacity = "1";
                     mesaSala.innerHTML = "";
                     mesaSala.style.pointerEvents = "auto";
                 })
                 // ev.preventDefault();
+                //hacemos un bucle para comprobar si para ese horario y esas mesas hay alguna reserva,
+                //si lo hay modificamos la mesa que esta reservada
                 $.each(reservas, function(index, reserva) {
-
+                    console.log(reserva)
                     $.each(mesas, function(index, mesaSala) {
                         
-                        if ((reserva.idMesa==mesaSala.id.split("_")[1]) && (reserva.idTramo==tramo[0])) {
+                        if ((reserva.idMesa==mesaSala.id.split("_")[1]) && (reserva.idTramo==tramo[0]) && (reserva.fecha_anulacion=="") && (reserva.fecha==fechaDisposicion )) {
                             mesaSala.style.opacity = "0.7";
                             mesaSala.style.textAlign = "center";
                             mesaSala.style.color = "black";
@@ -105,15 +123,17 @@ $(function(){
                     });
 
                 });
-
+                //clicamos sobre la mesa para seleccionarla
                 mesas.click(function(){
                     inputMesa[0].value=this.id;
                 })
                 
             })
 
+            //si el numero de los jugadores cambia, modificamos los juegos
             jugadores.change(function(ev){
                 ev.preventDefault();
+                //borramos todos los juegos menos el primero
                 $("#juegos option:not(:first)").remove();
                 juegos.prop('disabled', false);
                 juegos[0].style.backgroundColor="white";
@@ -131,9 +151,6 @@ $(function(){
                 });
             });
             jugadores.prop('disabled', false)
-            var dia= text.split("/")[0];
-            var mes= text.split("/")[1];
-            var anio= text.split("/")[2];
 
         
         }
@@ -143,7 +160,7 @@ $(function(){
     boton.click(function(ev){
         
         ev.preventDefault();
-        
+        console.log(reservas);
         var numError = [];
         if (formu[0].desde.value=="")
         {
@@ -183,7 +200,13 @@ $(function(){
             errorMesa.text("");
         }
 
+        for (let i = 0; i < reservas.length; i++) {
+            if(reservas[i].idMesa==formu[0].idMesa.value && reservas[i].fecha==formu[0].desde.value){
+                numError.push(6);
+            }
+        }
 
+        console.log(numError)
         if(numError.length==0){
 
             var plantilla=`
@@ -234,321 +257,3 @@ $(function(){
 
 
 })
-function cogeMesas() {
-    var mesasArray = [];
-    $.ajax("http://localhost:8000/api/mesa",
-        {
-            method: "GET",
-            dataType: "json",
-            crossDomain: true,
-            async: false,
-
-        }).done(function (data) {
-
-            $.each(data, function (key, val) {
-                var mesaOrigen = new Mesa(val);
-                mesasArray.push(mesaOrigen);
-
-            })
-
-        });
-    return mesasArray;
-}
-
-function cogeFestivos(){
-    var festivos=[];
-    $.ajax( "http://localhost:8000/api/festivo",  
-    {
-        method:"GET",
-        dataType:"json",
-        crossDomain: true,
-    }
-    ).done(function(data){
-        $.each( data, function( key, val ) {
-            festivos.push(jsonToDate(val));
-        });
-        
-    });
-    return festivos
-}
-function cogeJuegos(){
-    var juegos=[];
-    $.ajax( "http://localhost:8000/api/juego",  
-    {
-        method:"GET",
-        dataType:"json",
-        crossDomain: true,
-    }
-    ).done(function(data){
-        $.each( data, function( key, val ) {
-            juegos.push(val);
-        });
-        
-    });
-    return juegos
-}
-
-function cogeReservas() {
-    var reservas=[];
-    $.ajax( "http://localhost:8000/api/reserva",  
-    {
-        method:"GET",
-        dataType:"json",
-        crossDomain: true,
-        async: false,
-    }
-    ).done(function(data){
-        $.each( data, function( key, val ) {
-            reservas.push(val);
-        });
-    });
-    return reservas;
-}
-
-function cogeTramoBYInicio(inicio) {
-    var tramo=[];
-    $.ajax( "http://localhost:8000/api/tramo/"+inicio,  
-    {
-        method:"GET",
-        dataType:"json",
-        crossDomain: true,
-        async: false,
-    }
-    ).done(function(data){
-        $.each( data, function( key, val ) {
-            tramo.push(val);
-        });
-    });
-    return tramo;
-}
-
-function cogeDisposicionBase(){
-    var disposicionBase=[];
-    $.ajax( "http://localhost:8000/api/disposicion/00-00-0000",  
-    {
-        method:"GET",
-        dataType:"json",
-        crossDomain: true,
-        async: false
-    }
-    ).done(function(data){
-        $.each( data, function( key, val ) {
-            disposicionBase.push(val);
-        });
-    })
-    return disposicionBase;
-}
-
-function cogeDisposicion(fecha){
-    var disposicion=[];
-    $.ajax( "http://localhost:8000/api/disposicion/"+fecha,  
-    {
-        method:"GET",
-        dataType:"json",
-        crossDomain: true,
-        async: false
-    }
-    ).done(function(data){
-        $.each( data, function( key, val ) {
-            disposicion.push(val);
-        });
-    })
-    return disposicion;
-}
-
-function pintaDisposicionBase(mesas){
-    var disposicionBase=cogeDisposicionBase();
-    var mesasBase=[];
-    mesasBase=disposicionToMesa(disposicionBase)
-    pintaMesasDraggables(mesasBase);
-    pintaMesasAlmacenDraggables(mesas, mesasBase);
-}
-
-function pintaMesasDraggables(mesas) {
-    var almacen = $(".almacen");
-    var sala = $(".sala");
-    var arrayMesas = mesas;
-
-    var mesasAlmacen=$(".almacen .mesa")
-    mesasAlmacen.remove();
-    var mesasSala=$(".sala .mesa")
-    mesasSala.remove();
-
-
-    $.each(arrayMesas, function (key, val) {
-        if (val.y === 0 && val.x === 0) {
-            var mesa = $("<div>");
-            mesa.attr("id", "mesa_" + val.id);
-            mesa.attr("class", "mesa");
-            mesa.css('width', val.ancho);
-            mesa.css('height', val.alto);
-            almacen.append(mesa);
-        }
-        //si las coordenadas son distintas de 0 las meto dentro de la sala
-        else {
-            var mesa = $("<div>");
-            mesa.attr("id", "mesa_" + val.id);
-            mesa.attr("class", "mesa");
-            mesa.css('width', val.ancho);
-            mesa.css('height', val.alto);
-            mesa.css('top', val.x);
-            mesa.css('left', val.y);
-            sala.append(mesa);
-        }
-
-        $(".sala .mesa").draggable({  
-            // revert: true,
-            // accept: ".sala, .almacen",
-            // helper: "clone",              
-            revert: true,
-            helper: 'clone',
-            revertDuration: 0,
-            start: function(ev,ui){
-                ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
-            }
-        });
-    })
-}
-
-
-function pintaDisposicionBaseNoDraggable(){
-    var disposicionBase=[];
-    var mesasBase=[];
-    $.ajax( "http://localhost:8000/api/disposicion/00-00-0000",  
-    {
-        method:"GET",
-        dataType:"json",
-        crossDomain: true,
-        async: false
-    }
-    ).done(function(data){
-        $.each( data, function( key, val ) {
-            disposicionBase.push(val);
-        });
-    })
-    console.log(disposicionBase)
-    mesasBase=disposicionToMesa(disposicionBase)
-    pintaMesas(mesasBase);
-}
-
-function pintaMesas(mesas) {
-    var almacen = $(".almacen");
-    var sala = $(".sala");
-    var arrayMesas = mesas;
-
-    var mesasAlmacen=$(".almacen .mesa")
-    mesasAlmacen.remove();
-    var mesasSala=$(".sala .mesa")
-    mesasSala.remove();
-
-
-    $.each(arrayMesas, function (key, val) {
-        if (val.y === 0 && val.x === 0) {
-            var mesa = $("<div>");
-            mesa.attr("id", "mesa_" + val.id);
-            mesa.attr("class", "mesa");
-            mesa.css('width', val.ancho);
-            mesa.css('height', val.alto);
-            almacen.append(mesa);
-        }
-        //si las coordenadas son distintas de 0 las meto dentro de la sala
-        else {
-            var mesa = $("<div>");
-            mesa.attr("id", "mesa_" + val.id);
-            mesa.attr("class", "mesa");
-            mesa.css('width', val.ancho);
-            mesa.css('height', val.alto);
-            mesa.css('top', val.x);
-            mesa.css('left', val.y);
-            sala.append(mesa);
-        }
-    })
-}
-
-function pintaMesasAlmacenDraggables(mesas, mesasPintadas) {
-    var almacen = $(".almacen");
-    var mesasAlmacen=$(".almacen .mesa")
-    mesasAlmacen.remove();
-    var mesasPintar=[];
-
-
-    var Noesta=0;
-    $.each(mesas, function(index, mesa) {
-        Noesta=0;
-        $.each(mesasPintadas, function(index, mesaPintada) {
-            if (mesa.id==mesaPintada.id) {
-                return false; // termina el ciclo
-            }
-            else{
-                Noesta=Noesta+1
-            }
-        });
-        if (Noesta==mesasPintadas.length){
-           mesasPintar.push(mesa) 
-        }
-        
-    });
-    
-    
-    $.each(mesasPintar, function (key, val) {
-        
-            var mesa = $("<div>");
-            mesa.attr("id", "mesa_" + val.id);
-            mesa.attr("class", "mesa");
-            mesa.css('width', val.ancho);
-            mesa.css('height', val.alto);
-            almacen.append(mesa);
-        
-    });
-
-    $(".almacen .mesa").draggable({
-        revert: true,
-        helper: 'clone',
-        revertDuration: 0,
-        start: function(ev,ui){
-            ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
-        }
-    })
-}
-
-function jsonToDate(json){
-    var day="";
-    var month="";
-    if(json.day<10){
-        day="0"+json.day;
-    }
-    else{
-        day=json.day;
-    }
-
-    if(json.month<10){
-        month="0"+json.month;
-    }
-    else{
-        month=json.month;
-    }
-    return day+"/"+month+"/"+json.year;
-}
-
-function disposicionToMesa(disposicionBase){
-    var mesas=[];
-    for (let i = 0; i < disposicionBase.length; i++) {
-        
-        $.ajax( "http://localhost:8000/api/mesa/"+disposicionBase[i].idMesa,  
-        {
-            method:"GET",
-            dataType:"json",
-            crossDomain: true,
-            async: false
-        }
-        ).done(function(data){
-            $.each( data, function( key, val ) {
-                val.x=disposicionBase[i].X;
-                val.y=disposicionBase[i].Y
-                var mesa=new Mesa(val)
-                mesas.push(mesa);
-            });
-        })
-    }
-    return mesas;
-}

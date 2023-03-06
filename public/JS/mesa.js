@@ -1,4 +1,4 @@
-
+//para crear el objeto mesa
 function Mesa(json) {
     this.id= json.id;
     this.x = json.x;
@@ -10,18 +10,19 @@ function Mesa(json) {
 
 
 
-
+    //metodo para comprobar si una mesa choca con otra
     Mesa.prototype.solapa= function(mesaChoca){
-    //    debugger
+        //mesa es la mesa aque esta arrastrando
         var mesa= this;
         // var mesasArray= cogeMesas();
 
-     
+        //propiedades de la mesa que novemos
         let MMTop= mesa.x;
         let MMBotton=mesa.x + mesa.alto;      
         let MMLeft= mesa.y;
         let MMRight= mesa.y + mesa.ancho;
-
+        
+        //propiedades de la mesa que comparamos
         let MCTop= parseInt(mesaChoca.offsetTop);
         let MCBotton= MCTop + mesaChoca.offsetHeight;      
         let MCLeft= parseInt(mesaChoca.offsetLeft);

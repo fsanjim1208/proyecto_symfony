@@ -61,6 +61,7 @@ class EventoType extends AbstractType
             ])
             ->add('fecha', DateType::class, [
                 'widget' => 'single_text',
+                'data_class' => null,
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Por favor introduzca una fecha valida',

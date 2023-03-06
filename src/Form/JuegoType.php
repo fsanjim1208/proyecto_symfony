@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Callback;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
+use Symfony\Component\Validator\Constraints\Positive;
 
 class JuegoType extends AbstractType
 {
@@ -45,13 +46,20 @@ class JuegoType extends AbstractType
                     new NotBlank([
                         'message' => 'Por favor introduzca un numero de jugadores',
                     ]),
+                    new Positive([
+                        'message' => 'El valor debe ser positivo',
+                    ]),
                 ],
             ])
             ->add('jugadores_max',IntegerType::class,[
                 'constraints' => [
+                    new Positive([
+                        'message' => 'El valor debe ser positivo',
+                    ]),
                     new NotBlank([
                         'message' => 'Por favor introduzca un numero de jugadores',
                     ]),
+
                 ],
             ])
             ->add('img', FileType::class, [ 

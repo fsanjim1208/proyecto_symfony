@@ -27,10 +27,10 @@
                     </div>
                     <br>
                     
-                    {% if error%}
+                    {# {% if error %}
                         <label class="text-danger">{{error}}</label>
                     {% endif %}
-                    
+                     #}
                     <div class="form-floating">
                         {{ form_row(registrationForm.plainPassword,{'attr' : {'class': 'form-control','placeholder':'Contraseña'},label:'Contraseña'}) }} 
                     </div>
@@ -56,5 +56,4 @@
             {{ form_row(registrationForm.id_telegram) }} 
     {{ form_end(registrationForm) }} #}
 
-    {{dump()}}
 {% endblock %}
