@@ -71,4 +71,6 @@ class ApiJuegosController extends AbstractController
 
         return $this->json($arrayJuegos);
     }
+
+    
 }

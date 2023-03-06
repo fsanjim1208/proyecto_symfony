@@ -76,12 +76,14 @@ $(function(){
         }
     });
 
-    var mesasSala=$(".sala .mesa")
+
     botonDisposicion.click(function(){
+        var mesasSala=$(".sala .mesa")
+        console.log(mesasSala)
         if(input=="base"){
-            
+            console.log("3ee")
             for (let i = 0; i < mesasSala.length; i++) {
-                // console.log(mesasSala[i]);
+                console.log(mesasSala[i]);
                 
                 $.ajax("http://localhost:8000/api/disposicion2/"+mesasSala[i].id.split("_")[1]+"/00-00-0000",
                 {
@@ -92,9 +94,10 @@ $(function(){
                         "X": parseInt(mesasSala[i].style.top),
                         "Y": parseInt(mesasSala[i].style.left),
                     },
-        
                 }).done(function (data) {
+                    console.log(data)
                     if(data=="No hay disposiciones"){
+                        
                         console.log(mesasSala[i])
                         $.ajax("http://localhost:8000/api/disposicion",
                         {
@@ -137,7 +140,7 @@ $(function(){
         else if(input=="personalizada"){
         var errorFecha=$(".errorFecha")[0];
             if (fecha[0].value==""){
-                errorFecha.innerHTML="Introduce una fecha correcta";
+                errorFecha.innerHTML="Introduce una fecha valida";
             }
             else{
                 errorFecha.innerHTML="";
@@ -177,7 +180,6 @@ $(function(){
                 }
                 var disposicionDia=cogeDisposicion(fechaDisposicion);
                 var esta=0;
-
                 $.each(disposicionDia, function(index, disposicion) {
                     esta=0;
                     $.each(mesasSala, function(index, mesaSala) {
@@ -188,8 +190,6 @@ $(function(){
                             esta=esta+1
                         }
                     });
-                    console.log(esta)
-                    
                     if (esta==mesasSala.length){
                         $.ajax("http://localhost:8000/api/disposicion/"+disposicion.id,
                         {

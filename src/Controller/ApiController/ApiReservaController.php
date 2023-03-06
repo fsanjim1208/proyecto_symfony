@@ -49,7 +49,6 @@ class ApiReservaController extends AbstractController
                 
             ];
         }
-        
         return $this->json($arrayReservas);
     }
 
@@ -71,12 +70,12 @@ class ApiReservaController extends AbstractController
             $arrayReservas[] = [
                 'id' => $reserva->getId(),
                 'fecha' => $reserva->getFechaInicio(),
-                'idTramo' => $reserva->getTramo()->getId(),
-                'idJuego' => $reserva->getJuego()->getId(),
+                'idTramo' => $reserva->getTramo()->getIncio()." - ".$reserva->getTramo()->getFin(),
+                'idJuego' => $reserva->getJuego()->getNombre(),
                 'idMesa' => $reserva->getMesa()->getId(),
                 'idUser' => $reserva->getUsuario()->getId(),
                 'presentado' => $reserva->isPresentado(),  
-                
+                'fecha_anulacion'=>$reserva->getFechaAnulacion(),   
             ];
         }
         
@@ -136,7 +135,8 @@ class ApiReservaController extends AbstractController
                 'idJuego' => $reserva->getJuego()->getId(),
                 'idMesa' => $reserva->getMesa()->getId(),
                 'idUser' => $reserva->getUsuario()->getId(),
-                'presentado' => $reserva->isPresentado(),                
+                'presentado' => $reserva->isPresentado(),     
+                'fecha_anulacion'=>$reserva->getFechaAnulacion(),           
             ];
         }
         
@@ -212,6 +212,7 @@ class ApiReservaController extends AbstractController
         $reserva->setMesa($mesa);
         $reserva->setUsuario($this->getUser());
         $reserva->setPresentado(false);
+        $reserva->setFechaAnulacion("");
 
         $entityManager->persist($reserva);
         $entityManager->flush();
@@ -221,37 +222,66 @@ class ApiReservaController extends AbstractController
     }
 
 
-    // #[Route('/festivo/{id}',name:"festivo_show2", methods:"PUT")]
-    // public function edit(Request $request, int $id): Response
-    // {
-    //     $entityManager = $this->doctrine->getManager();
-    //     $festivo = $entityManager->getRepository(Festivo::class)->find($id);
-    //     //var_dump($producto);
-    //     if (!$festivo) {
-    //         return $this->json('No se encuentran festivos por esa id:  ' . $id, 404);
-    //     }
- 
-    //     $festivo->setAncho($request->request->get('ancho'));
-    //     $festivo->setAlto($request->request->get('alto'));
-    //     $festivo->setX($request->request->get('x'));
-    //     $festivo->setY($request->request->get('y'));
-    //     $festivo->setImagen($request->request->get('imagen'));
+    #[Route('/reserva/{id}',name:"reserva_update", methods:"PUT")]
+    public function update_reserva(Request $request, int $id): Response
+    {
+        $entityManager = $this->doctrine->getManager();
+        $reserva = $entityManager->getRepository(Reserva::class)->find($id);
+        //var_dump($producto);
+        if (!$reserva) {
+            return $this->json('No se encuentran festivos por esa id:  ' . $id, 404);
+        }
+        if ($request->request->get('presentado')=="0"){
+            $reserva->setPresentado(false);
+        }else{
+            $reserva->setPresentado(true);
+        }
         
-    //     $entityManager->persist($festivo);
-    //     $entityManager->flush();
 
-    //     $arrayfestivos[] = [
-    //         'id' => $festivo->getId(),
-    //         'ancho' => $festivo->getAncho(),
-    //         'alto' => $festivo->getAlto(),
-    //         'x' => $festivo->getX(),
-    //         'y' => $festivo->getY(),
-    //         'imagen' => $festivo->getImagen(),
-    //     ];
+        
+        $entityManager->persist($reserva);
+        $entityManager->flush();
+
+        $reservasArray[] = [
+            'id' => $reserva->getId(),
+            'fecha' => $reserva->getFechaInicio(),
+            'idTramo' => $reserva->getTramo()->getId(),
+            'idJuego' => $reserva->getJuego()->getId(),
+            'idMesa' => $reserva->getMesa()->getId(),
+            'idUser' => $reserva->getUsuario()->getId(),
+            'presentado' => $reserva->isPresentado(),                
+        ];
          
-    //     return $this->json($arrayfestivos);
-    // }
+        return $this->json($reservasArray);
+    }
  
+    #[Route('/cancelarReserva/{id}',name:"reserva_cancelar", methods:"PUT")]
+    public function cancelar_reserva(Request $request, int $id): Response
+    {
+        $entityManager = $this->doctrine->getManager();
+        $reserva = $entityManager->getRepository(Reserva::class)->find($id);
+        //var_dump($producto);
+        if (!$reserva) {
+            return $this->json('No se encuentran festivos por esa id:  ' . $id, 404);
+        }
+        
+        $reserva->setFechaAnulacion($request->request->get('fecha'));
+ 
+        $entityManager->persist($reserva);
+        $entityManager->flush();
+
+        $reservasArray[] = [
+            'id' => $reserva->getId(),
+            'fecha' => $reserva->getFechaInicio(),
+            'idTramo' => $reserva->getTramo()->getId(),
+            'idJuego' => $reserva->getJuego()->getId(),
+            'idMesa' => $reserva->getMesa()->getId(),
+            'idUser' => $reserva->getUsuario()->getId(),
+            'presentado' => $reserva->isPresentado(),                
+        ];
+         
+        return $this->json($reservasArray);
+    }
 
 
     // 

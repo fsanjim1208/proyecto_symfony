@@ -8,9 +8,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Juego;
 use App\Form\JuegoType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class JuegoController extends AbstractController
 {
@@ -45,6 +47,27 @@ class JuegoController extends AbstractController
         return $this->render('juego/mantenimientoJuegos.html.twig',['juegos' => $juegos]);
     }
 
+    //ruta para eliminar un juego
+    #[Route('/deleteJuego/{id}' , name:"app_delete_juego")]
+    public function deleteJuego(Request $request,ManagerRegistry $doctrine, PaginatorInterface $paginator,SessionInterface $session, int $id)
+    {
+
+
+        $juego = $this->doctrine
+        ->getRepository(Juego::class)
+        ->findOneById($id);
+        try {
+            $this->doctrine->getManager()->remove($juego);
+            $this->doctrine->getManager()->flush();
+        } catch (\Throwable $th) {
+        // La eliminación falló, enviar un mensaje de error en una respuesta JSON.
+            $session->getFlashBag()->add('error', 'No se pudo eliminar el juego.');
+        }
+
+
+        return $this->redirect($this->generateUrl('app_mantenimiento_juegos'));
+    }
+
     //ruta para editar un juego
     #[Route('/editaJuegos/{id}' , name:"app_edita_juegos")]
     public function new( $id, Request $request, ManagerRegistry $doctrine, SluggerInterface $slugger): Response
@@ -65,30 +88,36 @@ class JuegoController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $juegomodificado = $form->getData();
         
-            $rutaimagen = $form->get('img')->getData();
+            if($request->request->get('eliminar_imagen')=="No"){
+                $rutaimagen = $form->get('img')->getData();
             
-            $juegomodificado->setImg($img);
-            
-            if ($rutaimagen) {
-                // dd($rutaimagen);
-                $originalFilename = pathinfo($rutaimagen->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                // $newFilename = 'Imagenes/juego/'.$safeFilename.'-'.uniqid().'.'.$rutaimagen->guessExtension();
-                $newFilename = 'Imagenes/juego/'.$safeFilename.'.'.$rutaimagen->guessExtension();
-
+                $juegomodificado->setImg($img);
                 
-                try {
-                    $rutaimagen->move(
-                        $this->getParameter('img_directory_juego'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+                if ($rutaimagen) {
+                    // dd($rutaimagen);
+                    $originalFilename = pathinfo($rutaimagen->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    // $newFilename = 'Imagenes/juego/'.$safeFilename.'-'.uniqid().'.'.$rutaimagen->guessExtension();
+                    $newFilename = 'Imagenes/juego/'.$safeFilename.'.'.$rutaimagen->guessExtension();
 
-                $juegomodificado->setImg($newFilename);
+                    
+                    try {
+                        $rutaimagen->move(
+                            $this->getParameter('img_directory_juego'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    $juegomodificado->setImg($newFilename);
+                }
             }
+            else{
+                $juegomodificado->setImg("");
+            }
+            
 
 
             $entityManager->persist($juegomodificado);

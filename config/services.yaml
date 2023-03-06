@@ -33,6 +33,13 @@ services:
     #         $urlend: '/sendMessage'
     #         $chatid: 'CHATID_DE_TELEGRAM'
 
+    # App\Service\TelegramSend:
+    #     arguments:
+    #         $bot: '6275526786:AAGx_6Yr-GvYRtW-slSFCDxKaf32mfyRhdo'
+
+    App\Service\EmailSender:
+        arguments:
+            $mailer: '@mailer'
 
     Telegram\Bot\Api:
         arguments:

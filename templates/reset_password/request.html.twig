@@ -1,0 +1,32 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Modifica tu contraseña{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('reset_password_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+    <div class="c-contentForm">
+        <h2 class="text-primary text-uppercase mt-5">Modifica tu contraseña</h2>
+        {{ form_start(requestForm,{'attr' : {'class': 'centraFormulario'}}) }}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating mb-3">
+                        {{ form_row(requestForm.email,{'attr' : {'class': 'form-control', 'placeholder':'Email'},label:'Email'}) }}
+                    </div>
+                
+                    <div class="mb-3">
+                        <small>
+                            Introduzca su direccion de correo y le enviaremos un enlace 
+                            para poder modificar su contraseña.
+                        </small>
+                    </div>
+                    <button class="btn btn-primary w-100">Enviar correo</button>
+                </div>
+            </div>
+        {{ form_end(requestForm) }}
+    </div>
+{% endblock %}
+
+ 

@@ -29,25 +29,36 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
-                $userPasswordHasher->hashPassword(
+
+            if($request->request->get('_password')==$form->get('plainPassword')->getData()){
+                $user->setPassword(
+                    $userPasswordHasher->hashPassword(
+                        $user,
+                        $form->get('plainPassword')->getData()
+                    )
+                );
+    
+                $entityManager->persist($user);
+                $entityManager->flush();
+    
+    
+                $userauthenticator->authenticateUser(
                     $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
-
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-
-            $userauthenticator->authenticateUser(
-                $user,
-                $formLoginAuthenticator,
-                $request
-            );
-            // do anything else you need here, like send an email
-
-            return $this->redirectToRoute('app_home');
+                    $formLoginAuthenticator,
+                    $request
+                );
+                // do anything else you need here, like send an email
+    
+                return $this->redirectToRoute('app_home');
+            }
+            else{
+                $error="Las contraseñas deben ser iguales";
+                return $this->render('registration/register.html.twig', [
+                    'registrationForm' => $form->createView(),
+                    'error'=>$error,
+                ]);
+            }
+            
         }
 
         return $this->render('registration/register.html.twig', [

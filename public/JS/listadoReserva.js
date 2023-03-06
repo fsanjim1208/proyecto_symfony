@@ -1,8 +1,7 @@
 $(function(){   
-    reservas=cogeReservasUsuario();
-    console.log(reservas)
-    tabla=$('#verReservas');
-
+    var reservas=cogeReservasUsuario();
+    var tabla=$('#verReservas');
+   
     tabla.DataTable({
         language: {
             "decimal": "",
@@ -31,13 +30,61 @@ $(function(){
             { data: 'idJuego' },
             { data: 'idMesa' },
             { data: 'presentado' },
-            
+            { data: 'cancelar' },
         ]
     
-    });
+    });     
+    HTMLTableRowElement.prototype.eliminar=function(){
+        this.parentElement.removeChild(this);
+    }
+    var cancelar=$('.cancelar');
+    cancelar.click(function(ev){
+        var id=this.id;
+        var pulsado=this;
+        var plantilla=`
+                <div>
+                    <p>¿Está seguro que desea cancelar su reserva?</p>
+                </div>`;
+
+            jqPlantilla=$(plantilla);
+
+            jqPlantilla.dialog({
+                title: "Cancelar reserva",
+                height: 200,
+                width: 300,
+                modal: true,
+                buttons: {
+                    "Cancelar": function() {
+                        var hoy= new Date();
+                        $.ajax( "http://localhost:8000/api/cancelarReserva/"+id,  
+                        {
+                            method:"PUT",
+                            dataType:"json",
+                            crossDomain: true,
+                            data:{
+                                "fecha" : hoy, 
+                            },
+                        })
+                        pulsado.parentElement.innerHTML='<label class="text-danger">Ya está cancelada</label>';
+                        jqPlantilla.dialog( "close" );
+                        
+                    },
+                    "Salir": function() {
+                    jqPlantilla.dialog( "close" );
+                    },
+                },
+                close: function() {
+                    jqPlantilla.dialog( "close" );
+                },
+            });
+        
+    })
+
 
 
 })
+
+
 
 function cogeReservas() {
     var reservas = [];
@@ -51,6 +98,7 @@ function cogeReservas() {
         }).done(function (data) {
 
             $.each(data, function (key, val) {
+                console.log(val)
                 if(val.presentado){
                     // val.validado='<img src="img/true.png" class="icono" data-valido="true" id="mensaje_"'+val.id+'>'
                     val.presentado='<label class="text-success">Si</label>';
@@ -68,6 +116,11 @@ function cogeReservas() {
 
 function cogeReservasUsuario() {
     var reservas = [];
+    var hoy = new Date(); 
+    var diaReserva="";
+    var mesReserva="";
+    var añoReserva="";
+
     $.ajax("http://localhost:8000/api/reserva2",
         {
             method: "GET",
@@ -76,8 +129,29 @@ function cogeReservasUsuario() {
             async: false,
 
         }).done(function (data) {
-
+            console.log(data)
             $.each(data, function (key, val) {
+
+                diaReserva=val.fecha.split("-")[0];
+                mesReserva=val.fecha.split("-")[1];
+                añoReserva=val.fecha.split("-")[2];
+               
+                var fecha= new Date(mesReserva+"/"+diaReserva+"/"+añoReserva)
+       
+                if(hoy>fecha){
+                    val.cancelar='<label class="text-danger">No se puede cancelar</label>';
+                }
+                else{
+                    val.cancelar='<button class="btn btn-danger cancelar" id="'+val.id+'">Cancelar</button>';
+                }
+
+                if( val.fecha_anulacion!=""){
+                    val.cancelar='<label class="text-danger">Ya está cancelada</label>';
+                }
+                
+
+
+                // val.cancelar='<button class="btn btn-danger" id="cancelar">Cancelar</button>';
                 if(val.presentado){
                     // val.validado='<img src="img/true.png" class="icono" data-valido="true" id="mensaje_"'+val.id+'>'
                     val.presentado='<label class="text-success">Si</label>';

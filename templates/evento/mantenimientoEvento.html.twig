@@ -1,7 +1,7 @@
 
 {% extends "base2.html.twig" %}
     {% block javascripts %}
-        <script src="{{ asset('JS/modalEliminar.js') }}" type="text/javascript"></script>
+        <script src="{{ asset('JS/modalEliminarEvento.js') }}" type="text/javascript"></script>
 
     {% endblock %}
     {% block body %}
@@ -25,14 +25,25 @@
                     <tr>
                         <td>{{ e.nombre }}</td>
                         <td>{{ e.descripcion }}</td>
-                        <td><img src="../{{e.img}}" class="c-imagen c-imagen--eventos" ></img></td>
+                        {% if e.img=="" %}
+                            <td><p>Este evento no tiene imagen</p></td>
+                        {% else %}
+                            <td><img src="../{{e.img}}" class="c-imagen c-imagen--eventos" ></img></td>
+                        {% endif %}
+                        
                         <td>{{ e.fecha|date("d/m/Y") }}</td>
+
+
                         <td>
-                            <a href="/editaEvento/{{e.id}}"><button type="button" class="btn btn-primary  mb-3" id="{{e.id}}"><i class="fa fa-edit"></i>  Editar</button></a> 
+                            {% if e.fecha > date() %}
+                                <a href="/editaEvento/{{e.id}}"><button type="button" class="btn btn-primary  mb-1" id="{{e.id}}"><i class="fa fa-edit"></i>  Editar</button></a> 
+                                <a href="/invitaUsu/{{e.id}}"><button type="button" class="btn btn-secondary mb-1" id="{{e.id}}"><i class="fa fa-users"></i> Invitar Usuarios</button></a>
+
+                            {% endif %}
                             
-                            <button type="button" class="btn btn-danger mb-3" id="{{e.id}}"><i class="fa fa-trash"></i> Eliminar</button> 
+                            <button type="button" class="btn btn-danger eliminarEvento" id="{{e.id}}"><i class="fa fa-trash"></i> Eliminar</button>
                             
-                            <a href="/invitaUsu/{{e.id}}"><button type="button" class="btn btn-primary " id="{{e.id}}"><i class="fa fa-users"></i> Invitar Usuarios</button></a>
+                            
                             {# <button class="btn btn-primary mb-3"><i class="fa fa-group"></i>Invitar Usuarios</button> #}
                             {# <a href="{{ path('app_home') }}"><i class="fa fa-edit" style="font-size:24px" data-toggle="modal" data-target="#Edit{{juego.id}}"></i></a>
                             <a href=""><i class="fa fa-trash" style="font-size:24px"  data-toggle="modal" data-target="#Delete{{juego.id}}"></i></a>#}

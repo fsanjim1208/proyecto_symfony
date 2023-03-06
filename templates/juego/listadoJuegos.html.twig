@@ -25,7 +25,11 @@
                         <td>{{ juego.editorial }}</td>
                         <td>{{ juego.getJugadoresMin() }}</td> 
                         <td>{{ juego.getJugadoresMax() }}</td> 
-                        <td><img src={{juego.img}} class="c-imagen c-imagen--juegos" ></img></td>
+                        {% if juego.img %}
+                            <td><img src="{{juego.img}}" class="c-imagen c-imagen--juegos" ></img></td>
+                        {% else %}
+                            <td>Sin imagen</td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </tbody>

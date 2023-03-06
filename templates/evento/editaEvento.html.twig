@@ -23,9 +23,21 @@
 
                     <label>Imagen</label>
                     <div class="form-floating mb-4">
-                        
-                        <img src="../{{evento.img}}" class="c-imagen c-imagen--juegos mb-4"></img>
-
+                        <p>¿Desea eliminar la imagen?</p>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="Si" name="eliminar_imagen" value="Si">
+                            <label class="form-check-label" for="Si">Sí</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" id="No" name="eliminar_imagen" value="No" checked>
+                            <label class="form-check-label" for="No">No</label>
+                        </div><br>
+                        <small>Esto dejara al juego sin imagen</small><br>
+                        {% if evento.img=="" %}
+                            <p>Este evento no tiene imagen</p>
+                        {% else %}
+                            <img src="../{{evento.img}}" class="c-imagen c-imagen--juegos mt-2 mb-4"></img>
+                        {% endif %}
                         {{ form_row(form.img,{'attr' : {'class': 'form-control'}}) }}
                     </div>
 
@@ -36,7 +48,7 @@
                             <a href="{{path('app_mantenimiento_evento')}}"><input class="btn btn-secondary w-100 py-3" value="Salir"></input></a>
                         </div>
                         <div class="form-floating mb-4 col">
-                            {{ form_row(form.save,{'attr' : {'class': 'btn btn-primary w-100 py-3'}})}}
+                            {{ form_row(form.save,{'attr' : {'class': 'btn btn-primary w-100 py-3'},label:"Guardar"})}}
                         </div>
 
                         {# <button type="submit" id="evento_save" name="evento[save]" class="btn btn-primary w-100 py-3 col">Editar Juego</button> #}

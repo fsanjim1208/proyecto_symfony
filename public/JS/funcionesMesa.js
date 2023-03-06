@@ -116,6 +116,7 @@ function MesasAlmacenDraggable(){
         }
     })
 }
+
 function pintaMesas(mesas) {
     var almacen = $(".almacen");
     var sala = $(".sala");

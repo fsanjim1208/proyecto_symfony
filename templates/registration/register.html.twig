@@ -12,20 +12,33 @@
                         {{ form_row(registrationForm.nombre,{'attr' : {'class': 'form-control', 'placeholder':'Nombre'},label:'Nombre'}) }}
                     </div>
                     <br>
-                    <div class="form-floating">
-                        {{ form_row(registrationForm.apellido1,{'attr' : {'class': 'form-control','placeholder':'Apellido 1'},label:"Apellido 1"}) }}
-                    </div>
-                    <br>
-                    <div class="form-floating">
-                        {{ form_row(registrationForm.apellido2,{'attr' : {'class': 'form-control','placeholder':'Apellido 2'},label:'Apellido 2'}) }}
-                    </div>
+                    <div class="row">
+                        <div class="form-floating col">
+                            {{ form_row(registrationForm.apellido1,{'attr' : {'class': 'form-control','placeholder':'Apellido 1'},label:"Apellido 1"}) }}
+                        </div>
+                    
+                        <div class="form-floating col">
+                            {{ form_row(registrationForm.apellido2,{'attr' : {'class': 'form-control','placeholder':'Apellido 2'},label:'Apellido 2'}) }}
+                        </div>
+                    </div>    
                     <br>
                     <div class="form-floating">
                         {{ form_row(registrationForm.email,{'attr' : {'class': 'form-control','placeholder':'Email'},label:'Email'}) }}
                     </div>
                     <br>
+                    
+                    {% if error%}
+                        <label class="text-danger">{{error}}</label>
+                    {% endif %}
+                    
                     <div class="form-floating">
                         {{ form_row(registrationForm.plainPassword,{'attr' : {'class': 'form-control','placeholder':'Contraseña'},label:'Contraseña'}) }} 
+                    </div>
+                    <br>
+                    <div>
+                        <label for="password">Repita la contraseña</label>
+                        <input type="password" class="form-control" id="password" name="_password" placeholder="Contraseña">
+                        
                     </div>
                     <br>
                     <div class="form-floating">

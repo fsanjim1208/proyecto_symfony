@@ -122,7 +122,7 @@
                                 <a href="{{ path('app_mantenimiento_juegos') }}" class="dropdown-item">JUEGOS</a>
                                 <a href="{{ path('app_mantenimiento_evento') }}" class="dropdown-item">EVENTOS</a>
                                 <a href="{{ path('app_disposicion') }}" class="dropdown-item">DISPOSICION</a>
-                                <a href="{{ path('app_mantenimientoReserva') }}" class="dropdown-item">RESERVSAS</a>
+                                <a href="{{ path('app_mantenimientoReserva') }}" class="dropdown-item">RESERVAS</a>
                             </div>
                         </div>
                     {% endif %}
@@ -137,7 +137,7 @@
                     <a href="#" class="nav-link dropdown-toggle me-3" data-bs-toggle="dropdown">{{app.user.email}}</a>
                     <div class="dropdown-menu fade-down ms-3">
                         <a href="{{ path('app_logout') }}" class="dropdown-item">Cerrar Sesion</a>
-                        <a href="/edit" class="dropdown-item">Editar Usuario</a>
+                    <a href="{{ path('app_user_edit') }}" class="dropdown-item">Editar Usuario</a>
                         
                     </div>
                 </div>
@@ -153,15 +153,15 @@
 
         {% endblock %}
             <footer>
-        <div>
-            <div class="social">
-                <a href="#"><img src="{{ asset('Imagenes/facebook.png') }}" alt="facebook"></a>
-                <a href="#"><img src="{{ asset('Imagenes/youtube.png') }}" alt="youtube"></a>
-                <a href="#"><img src="{{ asset('Imagenes/twitter.png') }}" alt="twitter"></a>
-                <a href="#"><img src="{{ asset('Imagenes/instagram.jpg') }}" alt="instagram"></a><br>
-                <small class="mt-5">Copyright © Departamento de Informática 2019</small>
-            </div>
-        </div>
-    </footer>
+                <div>
+                    <div class="social">
+                        <a href="#"><img src="{{ asset('Imagenes/facebook.png') }}" alt="facebook"></a>
+                        <a href="#"><img src="{{ asset('Imagenes/youtube.png') }}" alt="youtube"></a>
+                        <a href="#"><img src="{{ asset('Imagenes/twitter.png') }}" alt="twitter"></a>
+                        <a href="#"><img src="{{ asset('Imagenes/instagram.jpg') }}" alt="instagram"></a><br>
+                        <small class="mt-5">Copyright © Proyecto Xokas y Cía 2º DAW</small>
+                    </div>
+                </div>
+            </footer>
     </body>
 </html>

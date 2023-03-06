@@ -18,6 +18,8 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Callback;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class EventoType extends AbstractType
@@ -26,10 +28,21 @@ class EventoType extends AbstractType
     {
         $builder
             ->add('Nombre',TextType::class,[
-                'label'=>"Nombre"
-                ])
+                'label'=>"Nombre",
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Por favor el nombre no puede estar vacia',
+                    ]),
+                ],
+            ])
             ->add('Descripcion',TextareaType::class,[
                 'data_class' => null,
+                'required' => false,
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Por favor la descripcion no puede estar vacia',
+                    ]),
+                ],
             ])
             ->add('img', FileType::class, [ 
                   'label' => false,
@@ -47,10 +60,21 @@ class EventoType extends AbstractType
                 ],
             ])
             ->add('fecha', DateType::class, [
-                // 'widget' => 'choice',
-                // 'input'  => 'datetime_immutable'
                 'widget' => 'single_text',
-
+                'constraints' => [
+                    new NotBlank([
+                        'message' => 'Por favor introduzca una fecha valida',
+                    ]),
+                    new Callback([
+                        'callback' => function ($fecha, ExecutionContextInterface $context) {
+                            if ($fecha < new \DateTime()) {
+                                $context->buildViolation('La fecha debe ser posterior a la fecha actual.')
+                                    ->atPath('fecha')
+                                    ->addViolation();
+                            }
+                        }
+                    ])
+                ],
                 ])
             ->add('save', SubmitType::class, ['label' => 'Editar Juego'])
         ;

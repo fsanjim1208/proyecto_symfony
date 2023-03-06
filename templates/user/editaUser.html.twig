@@ -1,0 +1,65 @@
+{% extends 'base2.html.twig' %}
+
+    {% block javascripts %}
+        <script src="{{ asset('JS/editaUsu.js') }}" type="text/javascript"></script>
+    {% endblock %}
+
+{% block body %}
+    <div class="c-contentForm">
+        <h2 class="text-primary text-uppercase mt-5">Editar Usuario</h2>
+        <form class="centraFormulario" id="formu" action="{{ path('app_home') }}" method="post">
+            <div class="row g-3">
+                <div class="col-md-6">
+
+                    <div class="form-floating mb-4">
+                        <input type="email" class="form-control" id="email" name="_email" placeholder="Email" value="{{user.email}}">
+                        <label for="email">Email</label>
+                    </div>
+
+                    <div class="form-floating ">
+                        <input type="text" class="form-control" id="nombre" name="_nombre" placeholder="Nombre" value="{{user.nombre}}">
+                        <label for="nombre">Nombre</label>
+                    </div>
+
+                    <label id="ErrorNombre" class="text-danger"></label>
+
+                    <div class="row  g-3">
+                        <div class="form-floating col">
+                            <input type="text" class="form-control" id="apellido1" name="_apellido1" placeholder="Primer Apellido" value="{{user.apellido1}}">
+                            <label for="apellido1">Primer Apellido</label>
+                        </div>
+                        
+                        <div class="form-floating col">
+                            <input type="text" class="form-control" id="apellido2" name="_apellido2" placeholder="Segundo Apellido" value="{{user.apellido2}}">
+                            <label for="apellido2">Segundo Apellido</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <label id="ErrorApellido1" class="text-danger col mb-4"></label>   
+                        <label id="ErrorApellido2" class="text-danger col mb-4"></label>
+                    </div>
+
+                    
+                
+                    <div class="form-floating">
+                        <input type="text" class="form-control" id="telegram" name="_telegram" placeholder="Nº Telegram" value="{{user.idTelegram}}">
+                        <label for="telegram">Nº Telegram</label>
+                    </div>
+                    <label id="ErrorTelegram" class="text-danger" ></label>
+
+                    <div class="row">
+                        <div class="form-floating col-md-6">
+                            <a href="{{path('app_home')}}"><input class="btn btn-secondary w-100 py-3" value="Salir"></input></a>
+                        </div>
+                        <div class="form-floating col-md-6">
+                            <button class="btn btn-primary w-100 py-3" type="submit" id="Guardar">Guardar</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}

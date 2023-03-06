@@ -1,0 +1,13 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Email para cambiar su contraseña enviado{% endblock %}
+
+{% block body %}
+    <div class="text-center mt-4">
+        <p>
+            Si la cuenta asociada a ese email existe, enviaremos un email que contiene el link para poder modificar su contraseña.
+            Este link expirará en {{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+        </p>
+        <p>Si no ha recibido el email, porfavor revise la carpeta de spam o <a href="{{ path('app_forgot_password_request') }}">intentelo otra vez</a>.</p>
+    </div>
+{% endblock %}

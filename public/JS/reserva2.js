@@ -68,10 +68,10 @@ $(function(){
             
             if(disposicionesDia.length>0){
                 mesasdia = disposicionToMesa(disposicionesDia);
-                pintaMesasDraggables(mesasdia);
+                pintaMesas(mesasdia);
             }
             else{
-                pintaDisposicionBase(mesas);
+                pintaDisposicionBaseNoDraggable(mesas);
             }
 
             tramo.prop('disabled', false)
@@ -82,10 +82,17 @@ $(function(){
                 var inicio=this.value.split(" ")[0];
 
                 var tramo=cogeTramoBYInicio(inicio);
+
+                $.each(mesas, function(index, mesaSala) {
+                    mesaSala.style.opacity = "1";
+                    mesaSala.innerHTML = "";
+                    mesaSala.style.pointerEvents = "auto";
+                })
                 // ev.preventDefault();
                 $.each(reservas, function(index, reserva) {
 
                     $.each(mesas, function(index, mesaSala) {
+                        
                         if ((reserva.idMesa==mesaSala.id.split("_")[1]) && (reserva.idTramo==tramo[0])) {
                             mesaSala.style.opacity = "0.7";
                             mesaSala.style.textAlign = "center";
@@ -400,6 +407,61 @@ function pintaMesasDraggables(mesas) {
                 ui.helper.attr("id",ui.helper.prevObject.attr("id").split("_")[1]);
             }
         });
+    })
+}
+
+
+function pintaDisposicionBaseNoDraggable(){
+    var disposicionBase=[];
+    var mesasBase=[];
+    $.ajax( "http://localhost:8000/api/disposicion/00-00-0000",  
+    {
+        method:"GET",
+        dataType:"json",
+        crossDomain: true,
+        async: false
+    }
+    ).done(function(data){
+        $.each( data, function( key, val ) {
+            disposicionBase.push(val);
+        });
+    })
+    console.log(disposicionBase)
+    mesasBase=disposicionToMesa(disposicionBase)
+    pintaMesas(mesasBase);
+}
+
+function pintaMesas(mesas) {
+    var almacen = $(".almacen");
+    var sala = $(".sala");
+    var arrayMesas = mesas;
+
+    var mesasAlmacen=$(".almacen .mesa")
+    mesasAlmacen.remove();
+    var mesasSala=$(".sala .mesa")
+    mesasSala.remove();
+
+
+    $.each(arrayMesas, function (key, val) {
+        if (val.y === 0 && val.x === 0) {
+            var mesa = $("<div>");
+            mesa.attr("id", "mesa_" + val.id);
+            mesa.attr("class", "mesa");
+            mesa.css('width', val.ancho);
+            mesa.css('height', val.alto);
+            almacen.append(mesa);
+        }
+        //si las coordenadas son distintas de 0 las meto dentro de la sala
+        else {
+            var mesa = $("<div>");
+            mesa.attr("id", "mesa_" + val.id);
+            mesa.attr("class", "mesa");
+            mesa.css('width', val.ancho);
+            mesa.css('height', val.alto);
+            mesa.css('top', val.x);
+            mesa.css('left', val.y);
+            sala.append(mesa);
+        }
     })
 }
 

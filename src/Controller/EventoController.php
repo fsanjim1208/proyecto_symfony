@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Evento;
 use App\Entity\User;
 use App\Entity\Participa;
+use App\Form\EditEventoType;
 use App\Form\EventoType;
 use App\Form\ParticipaType;
 use Symfony\Component\HttpFoundation\Request;
@@ -115,36 +116,41 @@ class EventoController extends AbstractController
 
         $img= $evento->getImg();
 
-        $form = $this->createForm(EventoType::class, $evento,[
+        $form = $this->createForm(EditEventoType::class, $evento,[
            'method' => 'post',
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $eventomodificado = $form->getData();
 
-
-
-            $rutaimagen = $form->get('img')->getData();
-            
-            $eventomodificado->setImg($img);
-            if ($rutaimagen) {
-                $originalFilename = pathinfo($rutaimagen->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = 'Imagenes/evento/'.$safeFilename.'('.$eventomodificado->getNombre().').'.$rutaimagen->guessExtension();
-
+            if($request->request->get('eliminar_imagen')=="No"){
                 
-                try {
-                    $rutaimagen->move(
-                        $this->getParameter('img_directory_evento'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
+                $rutaimagen = $form->get('img')->getData();
+                
+                $eventomodificado->setImg($img);
+                if ($rutaimagen) {
+                    $originalFilename = pathinfo($rutaimagen->getClientOriginalName(), PATHINFO_FILENAME);
+                    // this is needed to safely include the file name as part of the URL
+                    $safeFilename = $slugger->slug($originalFilename);
+                    $newFilename = 'Imagenes/evento/'.$safeFilename.'('.$eventomodificado->getNombre().').'.$rutaimagen->guessExtension();
 
-                $eventomodificado->setImg($newFilename);
+                    
+                    try {
+                        $rutaimagen->move(
+                            $this->getParameter('img_directory_evento'),
+                            $newFilename
+                        );
+                    } catch (FileException $e) {
+                        // ... handle exception if something happens during file upload
+                    }
+
+                    $eventomodificado->setImg($newFilename);
+                }
             }
+            else{
+                $eventomodificado->setImg("");
+            }
+
 
             $entityManager->persist($eventomodificado);
             $entityManager->flush();
@@ -162,7 +168,7 @@ class EventoController extends AbstractController
     }
 
     #[Route('/invitaUsu/{idEvento}', name: 'app_invitaUsu_evento')]
-    public function invitaUsu(int $idEvento, Request $request,ManagerRegistry $doctrine,PaginatorInterface $paginator,MailerInterface $mailer,Api $telegram): Response
+    public function invitaUsu(int $idEvento, Request $request,ManagerRegistry $doctrine,PaginatorInterface $paginator,MailerInterface $mailer,Api $telegram, EmailSender $emailSender): Response
     {
 
         $entityManager= $doctrine->getManager();
@@ -227,7 +233,7 @@ class EventoController extends AbstractController
                         // dd($participacion);
                         $entityManager->persist($participacion);
                         $entityManager->flush();
-
+                        
                         $email = (new Email())
                         ->from('proyectosymfonyjuegos@gmail.com')
                         ->to($user->getEmail())
@@ -238,16 +244,21 @@ class EventoController extends AbstractController
                         ->subject('Invitacion al evento al evento')
                         ->html('<p> Usted ha sido invitado al evento, se le proporcionara un codigo, por favor no lo pierda, se le pedirá a la entrada</p>
                                 <p>Codigo de invitacion: <b>'.$participacion->getCodInvitacion().'</b></p>');
-
                         $mailer->send($email);
+
+                        // $this->emailSender->sendEmail('info@example.com', 'Hola', '¡Hola desde Symfony!');
 
                         $mensaje = new Api('6275526786:AAGx_6Yr-GvYRtW-slSFCDxKaf32mfyRhdo');
                         // Enviar el mensaje utilizando la API de Telegram
-        
-                        $mensaje->sendMessage([
-                            'chat_id' => $user->getIdTelegram(),
-                            'text' => 'Usted ha sido invitado a participar en el evento '.$evento->getNombre().' con el codigo de invitacion: '.$participacion->getCodInvitacion().'. Por favor no lo pierda.',
-                        ]);
+                        try {
+                            $mensaje->sendMessage([
+                                'chat_id' => $user->getIdTelegram(),
+                                'text' => 'Usted ha sido invitado a participar en el evento '.$evento->getNombre().' con el codigo de invitacion: '.$participacion->getCodInvitacion().'. Por favor no lo pierda.',
+                            ]);
+                        } catch (\Throwable $th) {
+                            //throw $th;
+                        }
+
 
                         $noEsta=0;
                     }
@@ -299,5 +310,22 @@ class EventoController extends AbstractController
             'participaciones' => $participaciones,
 
         ]);
+    }
+
+    #[Route('/deleteEvento/{id}' , name:"app_delete_evento")]
+    public function deleteEvento(Request $request,ManagerRegistry $doctrine, PaginatorInterface $paginator, int $id)
+    {
+        $evento = $this->doctrine
+        ->getRepository(Evento::class)
+        ->findOneById($id);
+        try {
+            $this->doctrine->getManager()->remove($evento);
+            $this->doctrine->getManager()->flush();
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+
+
+        return $this->redirect($this->generateUrl('app_mantenimiento_evento'));
     }
 }

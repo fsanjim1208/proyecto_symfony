@@ -10,7 +10,8 @@
         "doctrine/doctrine-bundle": "^2.8",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.14",
-        "easycorp/easyadmin-bundle": "^4.5",
+        "easycorp/easyadmin-bundle": "^4.6",
+        "irazasyed/telegram-bot-sdk": "^3.0",
         "knplabs/knp-paginator-bundle": "^6.1",
         "sensio/framework-extra-bundle": "^6.2",
         "symfony/asset": "6.2.*",
@@ -29,10 +30,10 @@
         "symfony/twig-bundle": "6.2.*",
         "symfony/validator": "6.2.*",
         "symfony/yaml": "6.2.*",
+        "symfonycasts/reset-password-bundle": "^1.14",
         "telegram-bot/api": "^2.3",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0",
-        "irazasyed/telegram-bot-sdk": "^3.0"
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {

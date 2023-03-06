@@ -1,0 +1,23 @@
+{% extends 'base2.html.twig' %}
+
+{% block title %}Modifica tu contraseña{% endblock %}
+
+{% block body %}
+    <div class="c-contentForm">
+        <h2 class="text-primary text-uppercase mt-5">Modifica tu contraseña</h2>
+        {{ form_start(resetForm,{'attr' : {'class': 'centraFormulario'}}) }}
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="form-floating">
+                        {{ form_row(resetForm.plainPassword,{'attr' : {'class': 'form-control'}}) }}
+                    </div>
+
+                    <button class="btn btn-primary w-100">Modifica su contraseña</button>
+                </div>
+            </div>
+        {{ form_end(resetForm) }}
+    </div>
+
+
+{% endblock %}

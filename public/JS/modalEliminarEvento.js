@@ -1,9 +1,9 @@
 $(function(){
-    var boton= $(".eliminar");
+    var boton=$(".eliminarEvento");
     boton.click(function(ev) {
         const id=this.id;
         console.log(id)
-        $.ajax( "http://localhost:8000/api/juego/"+id,  
+        $.ajax( "http://localhost:8000/api/evento/"+id,  
         {
             method:"GET",
             dataType:"json",
@@ -14,12 +14,21 @@ $(function(){
             var id=data.id;
             var nombre=data.nombre;
             var img=data.imagen;
-            console.log(data)
-            var plantilla=`
+            console.log(img)
+            if(img==null || img==""){
+                var plantilla=`
+                <div>
+                    <h4>`+nombre+`</h4>
+                </div>`;
+            }else{
+                var plantilla=`
                 <div>
                     <h4>`+nombre+`</h4>
                     <img src="`+img+`" class="c-imagen c-imagen--juegos"></img>
                 </div>`;
+            }
+
+            
 
             jqPlantilla=$(plantilla);
 
@@ -30,7 +39,7 @@ $(function(){
                 modal: true,
                 buttons: {
                     "Eliminar": function() {
-                        window.location.href = "http://localhost:8000/deleteJuego/"+id;
+                        window.location.href = "http://localhost:8000/deleteEvento/"+id;
                     },
                     Cancel: function() {
                     jqPlantilla.dialog( "close" );
@@ -43,5 +52,6 @@ $(function(){
 
         });
     })
-    // console.log(boton)
+
+
 })

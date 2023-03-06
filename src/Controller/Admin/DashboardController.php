@@ -58,27 +58,27 @@ class DashboardController extends AbstractDashboardController
                 MenuItem::linkToCrud('Nuevo','fa fa-plus-square', User::class) ->setAction('new'),
                 MenuItem::linkToCrud('Listado','fa fa-edit', User::class),
             ]),
-            MenuItem::subMenu('Festivos', 'fa fa-calendar')->setSubItems([
-                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Festivo::class) ->setAction('new'),
-                MenuItem::linkToCrud('Listado','fa fa-edit', Festivo::class),
-            ]),
+            // MenuItem::subMenu('Festivos', 'fa fa-calendar')->setSubItems([
+            //     MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Festivo::class) ->setAction('new'),
+            //     MenuItem::linkToCrud('Listado','fa fa-edit', Festivo::class),
+            // ]),
             MenuItem::subMenu('Eventos', 'fa fa-bell')->setSubItems([
                 MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Evento::class) ->setAction('new'),
                 MenuItem::linkToCrud('Listado','fa fa-edit', Evento::class),
 
             ]),
-            MenuItem::subMenu('Tramos', 'fa fa-clock-o')->setSubItems([
-                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Tramo::class) ->setAction('new'),
-                MenuItem::linkToCrud('Listado','fa fa-edit', Tramo::class),
-            ]),
-            MenuItem::subMenu('Participaciones')->setSubItems([
-                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Participa::class) ->setAction('new'),
-                MenuItem::linkToCrud('Listado','fa fa-edit', Participa::class),
-            ]),
-            MenuItem::subMenu('Presentaciones')->setSubItems([
-                MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Presentacion::class) ->setAction('new'),
-                MenuItem::linkToCrud('Listado','fa fa-edit', Presentacion::class),
-            ]),
+            // MenuItem::subMenu('Tramos', 'fa fa-clock-o')->setSubItems([
+            //     MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Tramo::class) ->setAction('new'),
+            //     MenuItem::linkToCrud('Listado','fa fa-edit', Tramo::class),
+            // ]),
+            // MenuItem::subMenu('Participaciones')->setSubItems([
+            //     MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Participa::class) ->setAction('new'),
+            //     MenuItem::linkToCrud('Listado','fa fa-edit', Participa::class),
+            // ]),
+            // MenuItem::subMenu('Presentaciones')->setSubItems([
+            //     MenuItem::linkToCrud('Nuevo','fa fa-plus-square', Presentacion::class) ->setAction('new'),
+            //     MenuItem::linkToCrud('Listado','fa fa-edit', Presentacion::class),
+            // ]),
            
         ];
     }

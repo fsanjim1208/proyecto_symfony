@@ -23,22 +23,19 @@
                     <tr>
                         <td>{{ e.nombre }}</td>
                         <td>{{ e.descripcion }}</td>
-                        <td><img src="../{{e.img}}" class="c-imagen c-imagen--juegos" ></img></td>
+                        {% if e.img %}
+                            <td><img src="../{{e.img}}" class="c-imagen c-imagen--juegos" ></img></td>
+                        {% else %}
+                            <td>Sin imagen</td>
+                        {% endif %}
+                        
                         <td>{{ e.fecha|date("d/m/Y") }}</td>
-                        {# <td>
-                            <a href="/editaJuegos/{{e.id}}"><button type="button" class="btn btn-primary editar ps-3 pe-3 mb-3" id="{{e.id}}"><i class="fa fa-edit"></i>  Editar</button></a> 
-                            <button type="button" class="btn btn-danger eliminar" id="{{e.id}}"><i class="fa fa-trash"></i>Eliminar</button> 
-                            {# <a href="{{ path('app_home') }}"><i class="fa fa-edit" style="font-size:24px" data-toggle="modal" data-target="#Edit{{juego.id}}"></i></a>
-                            <a href=""><i class="fa fa-trash" style="font-size:24px"  data-toggle="modal" data-target="#Delete{{juego.id}}"></i></a>
-                        </td> #}
+
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
 
-        {# <div class="navigation">
-            {{ knp_pagination_render(evento) }}
-        </div> #}
 
 
 

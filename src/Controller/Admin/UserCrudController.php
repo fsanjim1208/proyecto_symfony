@@ -7,7 +7,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud; 
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;      
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;      
- 
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -23,19 +26,22 @@ class UserCrudController extends AbstractCrudController
         if (Crud::PAGE_EDIT == $pageName){
             return[
                 'Nombre',
+                'Apellido1',
+                'Apellido2',
                 'Email',
+                'Id_telegram',
                 ChoiceField::new('roles')->setChoices(['ADMIN' => 'ROLE_ADMIN', 'USER' => 'ROLE_USER'])->allowMultipleChoices(),
             ];
         }
         return [
             
-            'Nombre',
-            'Apellido1',
-            'Apellido2',
-            'Email',
-            'Id_telegram',
-            // 'Password',
-            BooleanField::new('Admin'),
+            TextField::new('Nombre'),
+            TextField::new('Apellido1'),
+            TextField::new('Apellido2'),
+            EmailField::new('Email'),
+            Field::new('Password'),
+            IntegerField::new('Id_telegram'),
+            // BooleanField::new('Roles'),
         ];
     }
     
